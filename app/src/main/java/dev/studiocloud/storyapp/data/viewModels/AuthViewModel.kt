@@ -2,6 +2,7 @@ package dev.studiocloud.storyapp.data.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.data.services.ApiClient
 import dev.studiocloud.storyapp.data.services.ApiService
 import dev.studiocloud.storyapp.data.services.responses.DefaultResponse
@@ -14,6 +15,10 @@ import retrofit2.Response
 class AuthViewModel: ViewModel() {
     private val client: ApiService? = ApiClient().get()
     private val user: MutableLiveData<LoginResult?> = MutableLiveData()
+
+    init {
+        user.value = prefs?.user
+    }
 
     fun doRegister(
         name: String,
@@ -53,6 +58,7 @@ class AuthViewModel: ViewModel() {
             ) {
                 if (response.code() == 200) {
                     user.value = response.body()?.loginResult;
+                    prefs?.user = user.value
                     onLoginSuccess()
                 } else {
                     onLoginFailed?.invoke(response.body()?.message)
