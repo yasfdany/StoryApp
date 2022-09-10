@@ -17,6 +17,7 @@ import androidx.core.view.setPadding
 import dev.studiocloud.storyapp.App.Companion.toPx
 
 class PrimaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs), View.OnTouchListener{
+    var enable: Boolean = true
 
     init {
         setPadding(14.toPx.toInt())
@@ -42,12 +43,13 @@ class PrimaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(
                    else 0f
                 )
                 animationSet.playTogether(scaleX, scaleY, rotateY);
-                animationSet.start();
+                if(enable) animationSet.start();
                 true
             }
             MotionEvent.ACTION_UP -> {
                 if (rect.contains(view.left + event.x.toInt(), view.top + event.y.toInt())) {
-                    performClick()
+                    if(enable) performClick()
+                    alpha = if(enable) 1f else 0.2f
                 }
 
                 val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X,1f)

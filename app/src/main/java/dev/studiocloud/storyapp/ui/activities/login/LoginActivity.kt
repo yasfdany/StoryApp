@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
         authViewModel = if(viewModelFactory != null) ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java] else null
 
         binding.pbLogin.setOnClickListener {
+            binding.pbLogin.enable = false
         }
     }
 }
