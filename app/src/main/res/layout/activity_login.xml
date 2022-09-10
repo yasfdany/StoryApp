@@ -7,15 +7,30 @@
     android:orientation="vertical">
 
     <ScrollView
-        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <dev.studiocloud.storyapp.ui.components.TextField
-            android:hint="@string/input_email"
-            android:inputType="textEmailAddress"
+        <LinearLayout
+            android:padding="12dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
+            <dev.studiocloud.storyapp.ui.components.TextField
+                android:id="@+id/tfEmail"
+                android:hint="@string/input_email"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <dev.studiocloud.storyapp.ui.components.TextField
+                android:id="@+id/tfPassword"
+                android:layout_marginTop="12dp"
+                android:hint="@string/input_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

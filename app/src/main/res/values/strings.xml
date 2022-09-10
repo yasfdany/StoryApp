@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">StoryApp</string>
-    <string name="input_email">input email</string>
+    <string name="input_email">masukkan email</string>
+    <string name="input_password">masukkan password</string>
 </resources>

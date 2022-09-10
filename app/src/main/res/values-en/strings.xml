@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="input_email">input email</string>
+    <string name="input_password">input password</string>
 </resources>

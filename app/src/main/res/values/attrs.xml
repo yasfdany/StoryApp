@@ -3,5 +3,6 @@
     <declare-styleable name="TextField">
         <attr name="android:hint"/>
         <attr name="android:inputType"/>
+        <attr name="passwordVisibility" format="boolean"/>
     </declare-styleable>
 </resources>
