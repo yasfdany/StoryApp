@@ -40,7 +40,7 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
         showErrorButton()
     }
 
-    fun isValidEmail(target: CharSequence?): Boolean {
+    private fun isValidEmail(target: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(target)) {
             false
         } else {
@@ -55,10 +55,15 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
             errorIndicatorButton.setBackgroundColor(Color.TRANSPARENT)
             errorIndicatorButton.setImageDrawable(getDrawable(context,R.drawable.ic_round_error_24))
             errorIndicatorButton.setColorFilter(Color.RED)
-            removeView(errorIndicatorButton)
-            addView(errorIndicatorButton)
+
+            if(!isPasswordField){
+                removeView(errorIndicatorButton)
+                addView(errorIndicatorButton)
+            }
+            background = getDrawable(context, R.drawable.textfield_error_background)
         } else {
-            removeView(errorIndicatorButton)
+            if(!isPasswordField) removeView(errorIndicatorButton)
+            background = getDrawable(context, R.drawable.textfield_background)
         }
     }
 
