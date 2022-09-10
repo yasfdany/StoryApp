@@ -1,8 +1,8 @@
-package dev.studiocloud.storyapp.data.services
+package dev.studiocloud.storyapp.data.network
 
-import dev.studiocloud.storyapp.data.services.responses.DefaultResponse
-import dev.studiocloud.storyapp.data.services.responses.LoginResponse
-import dev.studiocloud.storyapp.data.services.responses.StoryResponse
+import dev.studiocloud.storyapp.data.model.DefaultResponse
+import dev.studiocloud.storyapp.data.model.LoginResponse
+import dev.studiocloud.storyapp.data.model.StoryResponse
 import retrofit2.Call
 import retrofit2.http.*
 
