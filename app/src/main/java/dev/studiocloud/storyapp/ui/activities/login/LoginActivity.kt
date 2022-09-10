@@ -1,4 +1,4 @@
-package dev.studiocloud.storyapp.ui.acivities.login
+package dev.studiocloud.storyapp.ui.activities.login
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

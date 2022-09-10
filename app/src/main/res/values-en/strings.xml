@@ -1,4 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">StoryApp</string>
     <string name="input_email">input email</string>
 </resources>
