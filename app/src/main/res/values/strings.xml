@@ -2,4 +2,7 @@
     <string name="app_name" translatable="false">StoryApp</string>
     <string name="input_email">masukkan email</string>
     <string name="input_password">masukkan password</string>
+    <string name="login_now">Masuk Sekarang</string>
+    <string name="please_enter_the_details_below">Silahkan isi data di bawah ini</string>
+    <string name="login">Masuk</string>
 </resources>

@@ -2,4 +2,7 @@
 <resources>
     <string name="input_email">input email</string>
     <string name="input_password">input password</string>
+    <string name="login_now">Login Now</string>
+    <string name="please_enter_the_details_below">Please enter the details below</string>
+    <string name="login">Login</string>
 </resources>

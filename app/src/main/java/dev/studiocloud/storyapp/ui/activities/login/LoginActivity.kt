@@ -1,6 +1,7 @@
 package dev.studiocloud.storyapp.ui.activities.login
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import dev.studiocloud.storyapp.data.repository.MainRepository
@@ -23,5 +24,8 @@ class LoginActivity : AppCompatActivity() {
         mainRepository = Injection.provideRepository(application)
         viewModelFactory = ViewModelFactory.getInstance(mainRepository)
         authViewModel = if(viewModelFactory != null) ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java] else null
+
+        binding.pbLogin.setOnClickListener {
+        }
     }
 }

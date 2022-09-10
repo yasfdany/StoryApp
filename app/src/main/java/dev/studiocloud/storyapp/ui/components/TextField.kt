@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.InputType
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -42,13 +43,16 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
         editText.layoutParams = LayoutParams(0,WRAP_CONTENT, 1f)
         editText.inputType = inputType ?: InputType.TYPE_CLASS_TEXT
         editText.setPadding(18.toPx.toInt())
+        editText.letterSpacing = 0.08f
 
         if (isPasswordField){
+            editText.typeface = Typeface.DEFAULT
             editText.transformationMethod = if(passwordVisibility) PasswordTransformationMethod.getInstance() else HideReturnsTransformationMethod.getInstance()
         }
         addView(editText)
 
         if(isPasswordField){
+            imageButton.layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
             imageButton.setPadding(14.toPx.toInt())
             imageButton.setBackgroundColor(Color.TRANSPARENT)
             imageButton.setImageDrawable(getDrawable(context,R.drawable.ic_round_visibility_off_24))
