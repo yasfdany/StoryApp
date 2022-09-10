@@ -1,7 +1,9 @@
 package dev.studiocloud.storyapp.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import dev.studiocloud.storyapp.data.model.DefaultResponse
 import dev.studiocloud.storyapp.data.model.LoginResponse
 import dev.studiocloud.storyapp.data.network.ApiClient
@@ -9,9 +11,12 @@ import dev.studiocloud.storyapp.data.network.ApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.Reader
 
 open class RemoteRepository {
     private val apiClient: ApiService? = ApiClient().get()
+    private val gson: Gson = Gson()
+
     companion object{
         private var INSTANCE: RemoteRepository? = null
 
@@ -21,6 +26,10 @@ open class RemoteRepository {
             }
             return INSTANCE
         }
+    }
+
+    fun errorBodyToResponse(data: Reader?): DefaultResponse? {
+        return gson.fromJson(data, DefaultResponse::class.java)
     }
 
     open fun doLogin(
@@ -34,11 +43,12 @@ open class RemoteRepository {
                 call: Call<LoginResponse?>,
                 response: Response<LoginResponse?>
             ) {
-                if(response.code() == 200){
+                if(response.isSuccessful){
                     data.value = response.body()
                     callback?.onDataReceived(response.body())
                 } else {
-                    callback?.onDataNotAvailable(response.body()?.message)
+                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
+                    callback?.onDataNotAvailable(errorResponse?.message)
                 }
             }
 
@@ -67,11 +77,12 @@ open class RemoteRepository {
                 call: Call<DefaultResponse?>,
                 response: Response<DefaultResponse?>
             ) {
-                if(response.code() == 200){
+                if(response.isSuccessful){
                     data.value = response.body()
                     callback?.onDataReceived(response.body())
                 } else {
-                    callback?.onDataNotAvailable(response.body()?.message)
+                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
+                    callback?.onDataNotAvailable(errorResponse?.message)
                 }
             }
 

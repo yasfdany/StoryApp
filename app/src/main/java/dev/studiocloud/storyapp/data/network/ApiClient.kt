@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 class ApiClient {
     companion object {
-        var baseUrl: String = "https://story-api.dicoding.dev/v1"
+        var baseUrl: String = "https://story-api.dicoding.dev/v1/"
     }
     private var retrofit: Retrofit? = null
 

@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
-    @GET("/stories")
+    @GET("stories")
     fun getAllStories(
         @Header("Authorization") Authorization: String,
         @Query("page") page: Int,
@@ -15,7 +15,7 @@ interface ApiService {
     ): Call<StoryResponse>?
 
     @FormUrlEncoded
-    @POST("/register")
+    @POST("register")
     fun doRegister(
         @Field("name") name: String,
         @Field("email") email: String,
@@ -23,7 +23,7 @@ interface ApiService {
     ): Call<DefaultResponse?>?
 
     @FormUrlEncoded
-    @POST("/login")
+    @POST("login")
     fun doLogin(
         @Field("email") email: String,
         @Field("password") password: String,
