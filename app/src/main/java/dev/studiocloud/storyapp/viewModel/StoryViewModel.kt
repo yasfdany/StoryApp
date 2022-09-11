@@ -11,9 +11,13 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
     private var endOfPage = false
 
     fun getStory(
-        reset: Boolean = false
+        reset: Boolean = false,
+        onFinish: (() -> Unit)? = null,
     ){
-        if (endOfPage) return
+        if (endOfPage) {
+            onFinish?.invoke()
+            return
+        }
 
         mainRepository?.getStory(
             page,
@@ -22,12 +26,15 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
                     page = 1
                     stories.value?.clear()
                 }
-                val temp = (stories.value?.toList() ?: mutableListOf()).toMutableList()
-                temp.addAll(it?.listStory ?: mutableListOf())
-                stories.value = temp
+                stories.value?.addAll(it?.listStory ?: mutableListOf())
+                stories.value = stories.value
 
                 page++
                 endOfPage = it?.listStory?.isEmpty() == true
+                onFinish?.invoke()
+            },
+            onFailed = {
+                onFinish?.invoke()
             }
         )
     }

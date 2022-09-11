@@ -5,17 +5,19 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.2" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/gradient_bottom.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_login_illustration.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/primary_button.xml" value="0.1315" />
+        <entry key="app/src/main/res/drawable/primary_oval.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/secondary_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/textfield_background.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/textfield_error_background.xml" value="0.1315" />
         <entry key="app/src/main/res/font/nunito_sans.xml" value="0.209375" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_story.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/item_story.xml" value="0.1" />
       </map>
     </option>
   </component>

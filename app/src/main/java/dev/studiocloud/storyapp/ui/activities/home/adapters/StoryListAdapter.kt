@@ -28,8 +28,8 @@ class StoryListAdapter(
                 Glide.with(context)
                     .applyDefaultRequestOptions(
                         RequestOptions()
-                            .override(500,500)
                             .centerCrop()
+                            .override(500,500)
                     )
                     .load(this.photoUrl)
                     .into(binding.ivStory)
