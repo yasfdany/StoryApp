@@ -5,4 +5,6 @@
     <string name="login_now">Masuk Sekarang</string>
     <string name="please_enter_the_details_below">Silahkan isi data di bawah ini</string>
     <string name="login">Masuk</string>
+    <string name="password_error">Password tidak boleh kurang dari 6 karakter</string>
+    <string name="email_error">Email tidak valid</string>
 </resources>

@@ -24,10 +24,6 @@ class LoginActivity : AppCompatActivity() {
         viewModelFactory = ViewModelFactory.getInstance(mainRepository)
         authViewModel = if(viewModelFactory != null) ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java] else null
 
-        binding.tfEmail.errorIndicatorButton.setOnClickListener {
-
-        }
-
         binding.pbLogin.setOnClickListener {
         }
     }

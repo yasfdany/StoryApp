@@ -1,5 +1,6 @@
 package dev.studiocloud.storyapp.ui.components
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
@@ -9,12 +10,13 @@ import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
-import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat.getColor
@@ -32,13 +34,10 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
     private var passwordVisibility: Boolean = typedArray.getBoolean(R.styleable.TextField_passwordVisibility, false)
     private val editText = AppCompatEditText(context)
     private val isPasswordField = inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD + 1
-    private val imageButton = ImageButton(context)
-    val errorIndicatorButton = ImageButton(context)
-    var errorMessage: String? = null
-    set(value){
-        field = value
-        showErrorButton()
-    }
+    private val passwordVisibilityPassword = ImageButton(context)
+    private val textFieldContainer = LinearLayoutCompat(context)
+    private val errorTextView = TextView(context)
+    private var errorMessage: String? = null
 
     private fun isValidEmail(target: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(target)) {
@@ -48,30 +47,21 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
         }
     }
 
-    private fun showErrorButton(){
-        if (errorMessage != null){
-            errorIndicatorButton.layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
-            errorIndicatorButton.setPadding(14.toPx.toInt())
-            errorIndicatorButton.setBackgroundColor(Color.TRANSPARENT)
-            errorIndicatorButton.setImageDrawable(getDrawable(context,R.drawable.ic_round_error_24))
-            errorIndicatorButton.setColorFilter(Color.RED)
-
-            if(!isPasswordField){
-                removeView(errorIndicatorButton)
-                addView(errorIndicatorButton)
-            }
-            background = getDrawable(context, R.drawable.textfield_error_background)
-        } else {
-            if(!isPasswordField) removeView(errorIndicatorButton)
-            background = getDrawable(context, R.drawable.textfield_background)
-        }
+    private fun initErrorTextView(){
+        errorTextView.textSize = 12f
+        errorTextView.setTextColor(Color.RED)
+        errorTextView.setPadding(16.toPx.toInt(),6.toPx.toInt(),0,0)
+        errorTextView.visibility = GONE
     }
 
-    init {
-        background = getDrawable(context, R.drawable.textfield_background)
-        orientation = HORIZONTAL
-        setVerticalGravity(Gravity.CENTER_VERTICAL)
+    private fun initTextFieldContainer(){
+        textFieldContainer.background = getDrawable(context, R.drawable.textfield_background)
+        textFieldContainer.orientation = HORIZONTAL
+        textFieldContainer.setVerticalGravity(Gravity.CENTER_VERTICAL)
+        textFieldContainer.layoutParams = LayoutParams(MATCH_PARENT,WRAP_CONTENT)
+    }
 
+    private fun initEditText(){
         editText.hint = hint
         editText.background = null
         editText.textSize = 14f
@@ -79,46 +69,65 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
         editText.inputType = inputType ?: InputType.TYPE_CLASS_TEXT
         editText.setPadding(18.toPx.toInt())
         editText.letterSpacing = 0.08f
-
         if (isPasswordField){
             editText.typeface = Typeface.DEFAULT
-            editText.transformationMethod = if(passwordVisibility) PasswordTransformationMethod.getInstance() else HideReturnsTransformationMethod.getInstance()
-        }
-        addView(editText)
-
-        if(isPasswordField){
-            imageButton.layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
-            imageButton.setPadding(14.toPx.toInt())
-            imageButton.setBackgroundColor(Color.TRANSPARENT)
-            imageButton.setImageDrawable(getDrawable(context,R.drawable.ic_round_visibility_off_24))
-            imageButton.setColorFilter(getColor(context, R.color.stroke))
-            imageButton.setOnClickListener {
-                togglePasswordVisibility()
-            }
-            addView(imageButton)
+            editText.transformationMethod = PasswordTransformationMethod.getInstance()
         }
 
         editText.addTextChangedListener {
             if(it != null){
-                errorMessage = if (it.length < 6) "error"
-                else null
-
-                if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS + 1){
-                    errorMessage = if (!isValidEmail(it)) "hehe"
+                if (isPasswordField){
+                    errorMessage = if (it.length < 6) resources.getString(R.string.password_error)
                     else null
                 }
+
+                if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS + 1){
+                    errorMessage = if (!isValidEmail(it)) resources.getString(R.string.email_error)
+                    else null
+                }
+
+                errorTextView.text = errorMessage
             }
+
+            errorTextView.visibility = if(errorMessage != null) VISIBLE else GONE
         }
     }
 
+    private fun initPasswordVisibilityButton(){
+        textFieldContainer.addView(editText)
+        if(isPasswordField){
+            passwordVisibilityPassword.layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
+            passwordVisibilityPassword.setPadding(14.toPx.toInt())
+            passwordVisibilityPassword.setBackgroundColor(Color.TRANSPARENT)
+            passwordVisibilityPassword.setImageDrawable(getDrawable(context,R.drawable.ic_round_visibility_off_24))
+            passwordVisibilityPassword.setColorFilter(getColor(context, R.color.stroke))
+            passwordVisibilityPassword.setOnClickListener {
+                togglePasswordVisibility()
+            }
+            textFieldContainer.addView(passwordVisibilityPassword)
+        }
+    }
+
+    init {
+        orientation = VERTICAL
+
+        initErrorTextView()
+        initTextFieldContainer()
+        initEditText()
+        initPasswordVisibilityButton()
+
+        addView(textFieldContainer)
+        addView(errorTextView)
+    }
+
     private fun togglePasswordVisibility(){
-        passwordVisibility = editText.transformationMethod != PasswordTransformationMethod.getInstance()
-        editText.transformationMethod = if(passwordVisibility) PasswordTransformationMethod.getInstance() else HideReturnsTransformationMethod.getInstance()
-        imageButton.setColorFilter(
+        passwordVisibility = editText.transformationMethod != HideReturnsTransformationMethod.getInstance()
+        editText.transformationMethod = if(passwordVisibility) HideReturnsTransformationMethod.getInstance() else PasswordTransformationMethod.getInstance()
+        passwordVisibilityPassword.setColorFilter(
             if(passwordVisibility) Color.BLACK
             else getColor(context, R.color.stroke)
         )
-        imageButton.setImageDrawable(
+        passwordVisibilityPassword.setImageDrawable(
             if(passwordVisibility) getDrawable(context,R.drawable.ic_round_visibility_24)
             else getDrawable(context,R.drawable.ic_round_visibility_off_24)
         )
