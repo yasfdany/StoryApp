@@ -37,32 +37,50 @@ class SecondaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextVie
 
         return when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X, 1f, 0.96f)
-                val scaleY = ObjectAnimator.ofFloat(this, View.SCALE_Y, 1f, 0.96f)
-                val rotateY = ObjectAnimator.ofFloat(this, View.ROTATION_Y,
-                   if(event.x.toInt() > view.width - (view.width / 3)) 4f
-                   else if(event.x.toInt() < view.width / 3) -4f
-                   else 0f
-                )
-                animationSet.playTogether(scaleX, scaleY, rotateY);
-                if(enable) animationSet.start();
+                animateActionDown(event, view, animationSet)
                 true
             }
             MotionEvent.ACTION_UP -> {
-                if (rect.contains(view.left + event.x.toInt(), view.top + event.y.toInt())) {
-                    if(enable) performClick()
-                    alpha = if(enable) 1f else 0.2f
-                }
-
-                val scaleX = ObjectAnimator.ofFloat(this, View.SCALE_X,1f)
-                val scaleY = ObjectAnimator.ofFloat(this, View.SCALE_Y,1f)
-                val rotateY = ObjectAnimator.ofFloat(this, View.ROTATION_Y,0f)
-
-                animationSet.playTogether(scaleX, scaleY, rotateY);
-                animationSet.start();
+                animateActionUp(rect, view, event, animationSet)
                 true
             }
             else -> false
         }
+    }
+
+    private fun animateActionUp(
+        rect: Rect,
+        view: View,
+        event: MotionEvent,
+        animationSet: AnimatorSet
+    ) {
+        if (rect.contains(view.left + event.x.toInt(), view.top + event.y.toInt())) {
+            if (enable) performClick()
+            alpha = if (enable) 1f else 0.2f
+        }
+
+        val scaleX = ObjectAnimator.ofFloat(this, SCALE_X, 1f)
+        val scaleY = ObjectAnimator.ofFloat(this, SCALE_Y, 1f)
+        val rotateY = ObjectAnimator.ofFloat(this, ROTATION_Y, 0f)
+
+        animationSet.playTogether(scaleX, scaleY, rotateY);
+        animationSet.start();
+    }
+
+    private fun animateActionDown(
+        event: MotionEvent,
+        view: View,
+        animationSet: AnimatorSet
+    ) {
+        val scaleX = ObjectAnimator.ofFloat(this, SCALE_X, 1f, 0.96f)
+        val scaleY = ObjectAnimator.ofFloat(this, SCALE_Y, 1f, 0.96f)
+        val rotateY = ObjectAnimator.ofFloat(
+            this, ROTATION_Y,
+            if (event.x.toInt() > view.width - (view.width / 3)) 4f
+            else if (event.x.toInt() < view.width / 3) -4f
+            else 0f
+        )
+        animationSet.playTogether(scaleX, scaleY, rotateY);
+        if (enable) animationSet.start();
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -11,12 +12,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:scaleType="centerCrop"
-            android:id="@+id/ivStory"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="420dp" />
+            android:layout_height="420dp">
+
+            <ImageView
+                tools:src="@drawable/dummy"
+                android:scaleType="centerCrop"
+                android:id="@+id/ivStory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="24dp"
+                android:gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/post_overlay">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:id="@+id/tvCaption"
+                    android:maxLines="3"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/viAccountContainer"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/white_oval">
+
+        <LinearLayout
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="34dp"
+                android:layout_height="34dp" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="6dp"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </eightbitlab.com.blurview.BlurView>
 
 </RelativeLayout>

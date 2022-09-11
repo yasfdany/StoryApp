@@ -27,16 +27,14 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Y" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:textSize="14sp"
-                tools:text="Ya'suf Dany" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
