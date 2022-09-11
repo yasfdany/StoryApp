@@ -1,4 +1,4 @@
-package dev.studiocloud.storyapp.data.network
+package dev.studiocloud.storyapp.data.source.network
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient

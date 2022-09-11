@@ -1,10 +1,9 @@
 package dev.studiocloud.storyapp.ui.activities.register
 
 import android.app.ProgressDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dev.studiocloud.storyapp.R
@@ -16,8 +15,8 @@ import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 
 class RegisterActivity : AppCompatActivity(), OnTextChange {
     private lateinit var binding: ActivityRegisterBinding
-    private var authViewModel: AuthViewModel? = null
     private var viewModelFactory: ViewModelFactory? = null
+    private var authViewModel: AuthViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +43,12 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
                 binding.tfName.getText(),
                 binding.tfEmail.getText(),
                 binding.tfPassword.getText(),
-                onRegisterSuccess = {
+                onSuccess = {
                     progressDialog.dismiss()
                     Toast.makeText(this,it?.message ?: "", Toast.LENGTH_SHORT).show()
                     finish()
                 },
-                onRegisterFailed = {
+                onFailed = {
                     progressDialog.dismiss()
                     val snackBar = Snackbar.make(binding.rootRegisterPage,it ?: "tst", Snackbar.LENGTH_SHORT)
                     snackBar.show()

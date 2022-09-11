@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dev.studiocloud.storyapp.R
-import dev.studiocloud.storyapp.data.repository.MainRepository
 import dev.studiocloud.storyapp.databinding.ActivityLoginBinding
-import dev.studiocloud.storyapp.di.Injection
 import dev.studiocloud.storyapp.ui.activities.home.HomeActivity
 import dev.studiocloud.storyapp.ui.activities.register.RegisterActivity
 import dev.studiocloud.storyapp.ui.components.OnTextChange
@@ -20,8 +18,8 @@ import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 @Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity(), OnTextChange {
     private lateinit var binding: ActivityLoginBinding
-    private var authViewModel: AuthViewModel? = null
     private var viewModelFactory: ViewModelFactory? = null
+    private var authViewModel: AuthViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +47,11 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
             authViewModel?.doLogin(
                 binding.tfEmail.getText(),
                 binding.tfPassword.getText(),
-                onLoginSuccess = {
+                onSuccess = {
                     progressDialog.dismiss()
                     startActivity(Intent(this, HomeActivity::class.java))
                 },
-                onLoginFailed = {
+                onFailed = {
                     progressDialog.dismiss()
                     val snackBar = Snackbar.make(binding.rootLoginPage,it ?: "", Snackbar.LENGTH_SHORT)
                     snackBar.show()

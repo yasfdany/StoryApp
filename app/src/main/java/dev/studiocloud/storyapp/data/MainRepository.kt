@@ -1,10 +1,10 @@
-package dev.studiocloud.storyapp.data.repository
+package dev.studiocloud.storyapp.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import dev.studiocloud.storyapp.data.MainDataSource
-import dev.studiocloud.storyapp.data.model.DefaultResponse
-import dev.studiocloud.storyapp.data.model.LoginResponse
+import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
+import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
+import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 
 class MainRepository(
     private val remoteRepository: RemoteRepository,
@@ -32,17 +32,17 @@ class MainRepository(
     override fun doLogin(
         email: String,
         password: String,
-        onLoginSuccess: (response: LoginResponse?) -> Unit,
-        onLoginFailed: ((message: String?) -> Unit)?
+        onSuccess: (response: LoginResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)?
     ): LiveData<LoginResponse?> {
         val response: MutableLiveData<LoginResponse?> = MutableLiveData()
 
-        remoteRepository.doLogin(email, password, object: RemoteRepository.LoginCallback{
+        remoteRepository.doLogin(email, password, object: RemoteRepository.LoginCallback {
                 override fun onDataReceived(loginResponse: LoginResponse?) {
-                    onLoginSuccess(loginResponse)
+                    onSuccess(loginResponse)
                 }
                 override fun onDataNotAvailable(message: String?) {
-                    onLoginFailed?.invoke(message)
+                    onFailed?.invoke(message)
                 }
             }
         )
@@ -54,18 +54,38 @@ class MainRepository(
         name: String,
         email: String,
         password: String,
-        onRegisterSuccess: (response: DefaultResponse?) -> Unit,
-        onRegisterFailed: ((message: String?) -> Unit)?
+        onSuccess: (response: DefaultResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)?
     ): LiveData<DefaultResponse?> {
         val response: MutableLiveData<DefaultResponse?> = MutableLiveData()
 
-        remoteRepository.doRegister(name, email, password, object: RemoteRepository.DefaultCallback{
+        remoteRepository.doRegister(name, email, password, object: RemoteRepository.DefaultCallback {
             override fun onDataReceived(defaultResponse: DefaultResponse?) {
-                onRegisterSuccess(defaultResponse)
+                onSuccess(defaultResponse)
             }
 
             override fun onDataNotAvailable(message: String?) {
-                onRegisterFailed?.invoke(message)
+                onFailed?.invoke(message)
+            }
+        })
+
+        return response
+    }
+
+    override fun getStory(
+        page: Int,
+        onSuccess: (response: StoryResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)?
+    ): LiveData<StoryResponse?> {
+        val response: MutableLiveData<StoryResponse?> = MutableLiveData()
+
+        remoteRepository.getStory(page, object : RemoteRepository.StoryCallback{
+            override fun onDataReceived(storyResponse: StoryResponse?) {
+                onSuccess(storyResponse)
+            }
+
+            override fun onDataNotAvailable(message: String?) {
+                onFailed?.invoke(message)
             }
         })
 

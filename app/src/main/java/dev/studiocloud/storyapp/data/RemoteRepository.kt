@@ -1,13 +1,14 @@
-package dev.studiocloud.storyapp.data.repository
+package dev.studiocloud.storyapp.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import dev.studiocloud.storyapp.data.model.DefaultResponse
-import dev.studiocloud.storyapp.data.model.LoginResponse
-import dev.studiocloud.storyapp.data.network.ApiClient
-import dev.studiocloud.storyapp.data.network.ApiService
+import dev.studiocloud.storyapp.App.Companion.prefs
+import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
+import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
+import dev.studiocloud.storyapp.data.source.network.ApiClient
+import dev.studiocloud.storyapp.data.source.network.ApiService
+import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -100,6 +101,39 @@ open class RemoteRepository {
         return data
     }
 
+    open fun getStory(
+        page: Int,
+        callback: StoryCallback?
+    ): LiveData<StoryResponse?>{
+        val token = prefs?.user?.token
+        val data: MutableLiveData<StoryResponse?> = MutableLiveData()
+        val listener = object: Callback<StoryResponse?> {
+            override fun onResponse(
+                call: Call<StoryResponse?>,
+                response: Response<StoryResponse?>
+            ) {
+                if(response.isSuccessful){
+                    data.value = response.body()
+                    callback?.onDataReceived(response.body())
+                } else {
+                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
+                    callback?.onDataNotAvailable(errorResponse?.message)
+                }
+            }
+
+            override fun onFailure(call: Call<StoryResponse?>, t: Throwable) {
+                callback?.onDataNotAvailable(t.message)
+            }
+        }
+
+        apiClient?.getAllStories(
+            Authorization = "Bearer $token",
+            page,
+        )?.enqueue(listener)
+
+        return data
+    }
+
     interface DefaultCallback {
         fun onDataReceived(defaultResponse: DefaultResponse?)
         fun onDataNotAvailable(message: String?)
@@ -107,6 +141,11 @@ open class RemoteRepository {
 
     interface LoginCallback {
         fun onDataReceived(loginResponse: LoginResponse?)
+        fun onDataNotAvailable(message: String?)
+    }
+
+    interface StoryCallback {
+        fun onDataReceived(storyResponse: StoryResponse?)
         fun onDataNotAvailable(message: String?)
     }
 }

@@ -3,7 +3,7 @@ package dev.studiocloud.storyapp.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import dev.studiocloud.storyapp.data.model.LoginResult
+import dev.studiocloud.storyapp.data.source.network.model.LoginResult
 
 class Prefs (context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences(APP_PREF_NAME, Context.MODE_PRIVATE)

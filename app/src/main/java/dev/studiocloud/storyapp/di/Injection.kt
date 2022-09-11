@@ -1,8 +1,8 @@
 package dev.studiocloud.storyapp.di
 
 import android.app.Application
-import dev.studiocloud.storyapp.data.repository.MainRepository
-import dev.studiocloud.storyapp.data.repository.RemoteRepository
+import dev.studiocloud.storyapp.data.MainRepository
+import dev.studiocloud.storyapp.data.RemoteRepository
 
 class Injection {
     companion object{

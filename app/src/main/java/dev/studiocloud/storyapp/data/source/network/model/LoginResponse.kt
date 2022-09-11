@@ -1,4 +1,4 @@
-package dev.studiocloud.storyapp.data.model
+package dev.studiocloud.storyapp.data.source.network.model
 
 import com.google.gson.annotations.SerializedName
 

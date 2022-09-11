@@ -1,8 +1,8 @@
-package dev.studiocloud.storyapp.data.network
+package dev.studiocloud.storyapp.data.source.network
 
-import dev.studiocloud.storyapp.data.model.DefaultResponse
-import dev.studiocloud.storyapp.data.model.LoginResponse
-import dev.studiocloud.storyapp.data.model.StoryResponse
+import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
+import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
+import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,7 +11,7 @@ interface ApiService {
     fun getAllStories(
         @Header("Authorization") Authorization: String,
         @Query("page") page: Int,
-        @Query("page") size: Int = 10,
+        @Query("size") size: Int = 10,
     ): Call<StoryResponse>?
 
     @FormUrlEncoded

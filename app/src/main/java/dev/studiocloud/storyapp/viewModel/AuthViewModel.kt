@@ -1,13 +1,11 @@
 package dev.studiocloud.storyapp.viewModel
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.studiocloud.storyapp.App.Companion.prefs
-import dev.studiocloud.storyapp.data.model.DefaultResponse
-import dev.studiocloud.storyapp.data.model.LoginResponse
-import dev.studiocloud.storyapp.data.model.LoginResult
-import dev.studiocloud.storyapp.data.repository.MainRepository
+import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
+import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
+import dev.studiocloud.storyapp.data.source.network.model.LoginResult
+import dev.studiocloud.storyapp.data.MainRepository
 
 class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
     var user: LoginResult? = null
@@ -20,18 +18,18 @@ class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
         name: String,
         email: String,
         password: String,
-        onRegisterSuccess: (response: DefaultResponse?) -> Unit,
-        onRegisterFailed: ((message: String?) -> Unit)? = null,
+        onSuccess: (response: DefaultResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)? = null,
     ){
         mainRepository?.doRegister(
             name,
             email,
             password,
-            onRegisterSuccess = {
-                onRegisterSuccess(it)
+            onSuccess = {
+                onSuccess(it)
             },
-            onRegisterFailed = {
-                onRegisterFailed?.invoke(it)
+            onFailed = {
+                onFailed?.invoke(it)
             }
         )
     }
@@ -39,19 +37,19 @@ class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
     fun doLogin(
         email: String,
         password: String,
-        onLoginSuccess: (response: LoginResponse?) -> Unit,
-        onLoginFailed: ((message: String?) -> Unit)? = null,
+        onSuccess: (response: LoginResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)? = null,
     ){
         mainRepository?.doLogin(
             email,
             password,
-            onLoginSuccess = {
+            onSuccess = {
                 user = it?.loginResult;
                 prefs?.user = it?.loginResult
-                onLoginSuccess(it)
+                onSuccess(it)
             },
-            onLoginFailed = {
-                onLoginFailed?.invoke(it)
+            onFailed = {
+                onFailed?.invoke(it)
             }
         )
     }

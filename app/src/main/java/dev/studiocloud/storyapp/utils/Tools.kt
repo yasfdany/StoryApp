@@ -6,7 +6,6 @@ import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
-
 open class Tools {
     open fun isValidEmail(target: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(target)) {

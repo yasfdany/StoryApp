@@ -1,11 +1,11 @@
-package dev.studiocloud.storyapp.data.model
+package dev.studiocloud.storyapp.data.source.network.model
 
 import com.google.gson.annotations.SerializedName
 
 data class StoryResponse(
 
 	@field:SerializedName("listStory")
-	val listStory: List<ListStoryItem?>? = null,
+	val listStory: List<StoryItem>? = null,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
@@ -14,7 +14,7 @@ data class StoryResponse(
 	val message: String? = null
 )
 
-data class ListStoryItem(
+data class StoryItem(
 
 	@field:SerializedName("photoUrl")
 	val photoUrl: String? = null,
