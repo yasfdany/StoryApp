@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
                 binding.tfPassword.getText(),
                 onSuccess = {
                     progressDialog.dismiss()
+                    finish()
                     startActivity(Intent(this, HomeActivity::class.java))
                 },
                 onFailed = {

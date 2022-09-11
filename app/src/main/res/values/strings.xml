@@ -12,4 +12,8 @@
     <string name="register">Daftar</string>
     <string name="loading">Memuat</string>
     <string name="register_now">Daftar Sekarang</string>
+    <string name="logout">Logout</string>
+    <string name="logout_description">Apakah kamu yakin ingin keluar dari akun ini?</string>
+    <string name="cancel">Batalkan</string>
+    <string name="exit_confirmation">Tekan lagi untuk keluar</string>
 </resources>

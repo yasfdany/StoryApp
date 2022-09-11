@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -31,10 +32,19 @@
 
             <TextView
                 android:id="@+id/tvName"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/ibLogout"
+                android:padding="10dp"
+                android:background="#00FFFFFF"
+                android:src="@drawable/ic_logout_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
