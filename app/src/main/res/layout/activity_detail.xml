@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_detail_scene"
+    tools:context=".ui.activities.detail.DetailActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvContainer"
+        android:transitionName="@string/story"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:layout_margin="12dp">
+
+        <ImageView
+            android:id="@+id/ivStory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/dummy" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

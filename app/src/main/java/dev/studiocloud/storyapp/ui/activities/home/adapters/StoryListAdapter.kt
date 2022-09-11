@@ -1,17 +1,26 @@
+@file:Suppress("DEPRECATION")
+
 package dev.studiocloud.storyapp.ui.activities.home.adapters
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 import dev.studiocloud.storyapp.databinding.ItemStoryBinding
+import dev.studiocloud.storyapp.ui.activities.detail.DetailActivity
+import dev.studiocloud.storyapp.utils.Constant
 import eightbitlab.com.blurview.RenderScriptBlur
 
 class StoryListAdapter(
@@ -55,6 +64,18 @@ class StoryListAdapter(
 
                 binding.tvName.text = this.name
                 binding.tvCaption.text = this.description
+
+                binding.ivStory.setOnClickListener {
+                    val optionsCompat: ActivityOptionsCompat =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            itemView.context as Activity,
+                            Pair(binding.cvContainer, context.getString(R.string.story)),
+                        )
+
+                    val intent = Intent(context,DetailActivity::class.java)
+                    intent.putExtra(Constant.STORY_DATA, this)
+                    context.startActivity(intent, optionsCompat.toBundle())
+                }
             }
         }
 

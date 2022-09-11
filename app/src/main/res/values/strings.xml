@@ -17,4 +17,5 @@
     <string name="cancel">Batalkan</string>
     <string name="exit_confirmation">Tekan lagi untuk keluar</string>
     <string name="story_content_description">This is a picture posted by people</string>
+    <string name="story">story</string>
 </resources>

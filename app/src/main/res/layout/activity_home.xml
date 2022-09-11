@@ -34,9 +34,10 @@
                 android:id="@+id/tvName"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:textSize="14sp" />
+                android:layout_marginStart="12dp"
+                android:textSize="16sp" />
 
             <ImageButton
                 android:id="@+id/ibLogout"

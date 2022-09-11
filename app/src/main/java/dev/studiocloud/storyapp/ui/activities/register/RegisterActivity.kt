@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package dev.studiocloud.storyapp.ui.activities.register
 
 import android.app.ProgressDialog
