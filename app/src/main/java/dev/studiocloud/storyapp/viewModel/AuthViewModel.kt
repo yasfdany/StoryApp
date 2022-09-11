@@ -49,7 +49,7 @@ class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
             password,
             onLoginSuccess = {
                 user.value = it?.loginResult;
-                prefs?.user = user.value
+//                prefs?.user = user.value
                 onLoginSuccess(it)
             },
             onLoginFailed = {

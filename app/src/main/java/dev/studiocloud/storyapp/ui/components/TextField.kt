@@ -32,7 +32,7 @@ interface OnTextChange{
 class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(context, attrs) {
     private val typedArray: TypedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.TextField, 0, 0)
     private var hint: String? = typedArray.getString(R.styleable.TextField_android_hint)
-    private var inputType: Int? = typedArray.getInt(R.styleable.TextField_android_inputType, 0)
+    private var inputType: Int = typedArray.getInt(R.styleable.TextField_android_inputType, -1)
     private var passwordVisibility: Boolean = typedArray.getBoolean(R.styleable.TextField_passwordVisibility, false)
     private val editText = AppCompatEditText(context)
     private val isPasswordField = inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD + 1
@@ -65,7 +65,7 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
         editText.background = null
         editText.textSize = 14f
         editText.layoutParams = LayoutParams(0,WRAP_CONTENT, 1f)
-        editText.inputType = inputType ?: InputType.TYPE_CLASS_TEXT
+        editText.inputType = if(inputType > 0) inputType else InputType.TYPE_CLASS_TEXT
         editText.setPadding(18.toPx.toInt())
         editText.letterSpacing = 0.08f
         if (isPasswordField){

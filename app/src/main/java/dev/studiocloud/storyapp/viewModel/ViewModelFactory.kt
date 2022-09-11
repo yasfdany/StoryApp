@@ -1,16 +1,18 @@
 package dev.studiocloud.storyapp.viewModel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dev.studiocloud.storyapp.data.repository.MainRepository
+import dev.studiocloud.storyapp.di.Injection
 
 class ViewModelFactory(private val mainRepository: MainRepository?) : ViewModelProvider.Factory {
     companion object{
         private var INSTANCE: ViewModelFactory? = null
 
-        fun getInstance(mainRepository: MainRepository?): ViewModelFactory? {
+        fun getInstance(application: Application): ViewModelFactory? {
             if (INSTANCE == null) {
-                INSTANCE = ViewModelFactory(mainRepository)
+                INSTANCE = ViewModelFactory(Injection.provideRepository(application))
             }
             return INSTANCE
         }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="input_email">input email</string>
-    <string name="input_password">input password</string>
+    <string name="enter_email">enter your email</string>
+    <string name="enter_password">enter your password</string>
     <string name="login_now">Login Now</string>
-    <string name="please_enter_the_details_below">Please enter the details below</string>
+    <string name="login_detail_description">Please enter details below</string>
+    <string name="register_detail_description">Please complete details below to register</string>
     <string name="login">Login</string>
     <string name="password_error">Password cannot be less than 6 characters</string>
     <string name="email_error">Email not valid</string>
     <string name="register">Register</string>
     <string name="loading">Loading</string>
+    <string name="register_now">Register Now</string>
+    <string name="enter_name">enter your name</string>
 </resources>
