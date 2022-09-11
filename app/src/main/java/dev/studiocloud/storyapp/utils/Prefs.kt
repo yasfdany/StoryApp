@@ -9,7 +9,7 @@ class Prefs (context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences(APP_PREF_NAME, Context.MODE_PRIVATE)
     private val gson: Gson = Gson()
 
-    var user: LoginResult?
+    var user: LoginResult? = null
         get() {
             val userJson: String? = preferences.getString(USER, "")
             var user: LoginResult? = null;
@@ -24,6 +24,7 @@ class Prefs (context: Context) {
             if(userJson != null){
                 preferences.edit().putString(USER, userJson).apply()
             }
+            field = value
         }
 
     companion object {

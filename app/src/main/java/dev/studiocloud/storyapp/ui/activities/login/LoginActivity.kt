@@ -10,6 +10,7 @@ import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.data.repository.MainRepository
 import dev.studiocloud.storyapp.databinding.ActivityLoginBinding
 import dev.studiocloud.storyapp.di.Injection
+import dev.studiocloud.storyapp.ui.activities.home.HomeActivity
 import dev.studiocloud.storyapp.ui.activities.register.RegisterActivity
 import dev.studiocloud.storyapp.ui.components.OnTextChange
 import dev.studiocloud.storyapp.utils.Tools
@@ -28,7 +29,12 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
         setContentView(binding.root)
 
         viewModelFactory = ViewModelFactory.getInstance(application)
-        authViewModel = if(viewModelFactory != null) ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java] else null
+        authViewModel = ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+
+        if(authViewModel?.user != null){
+            finish()
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
 
         binding.pbLogin.enable = false
         binding.sbRegister.setOnClickListener {
@@ -45,6 +51,7 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
                 binding.tfPassword.getText(),
                 onLoginSuccess = {
                     progressDialog.dismiss()
+                    startActivity(Intent(this, HomeActivity::class.java))
                 },
                 onLoginFailed = {
                     progressDialog.dismiss()

@@ -1,21 +1,19 @@
 package dev.studiocloud.storyapp.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.data.model.DefaultResponse
 import dev.studiocloud.storyapp.data.model.LoginResponse
 import dev.studiocloud.storyapp.data.model.LoginResult
-import dev.studiocloud.storyapp.data.network.ApiClient
-import dev.studiocloud.storyapp.data.network.ApiService
 import dev.studiocloud.storyapp.data.repository.MainRepository
 
 class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
-    private val client: ApiService? = ApiClient().get()
-    private val user: MutableLiveData<LoginResult?> = MutableLiveData()
+    var user: LoginResult? = null
 
     init {
-        user.value = prefs?.user
+        user = prefs?.user
     }
 
     fun doRegister(
@@ -48,8 +46,8 @@ class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
             email,
             password,
             onLoginSuccess = {
-                user.value = it?.loginResult;
-//                prefs?.user = user.value
+                user = it?.loginResult;
+                prefs?.user = it?.loginResult
                 onLoginSuccess(it)
             },
             onLoginFailed = {

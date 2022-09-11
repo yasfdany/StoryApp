@@ -1,6 +1,7 @@
 package dev.studiocloud.storyapp.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dev.studiocloud.storyapp.data.repository.MainRepository
@@ -11,9 +12,7 @@ class ViewModelFactory(private val mainRepository: MainRepository?) : ViewModelP
         private var INSTANCE: ViewModelFactory? = null
 
         fun getInstance(application: Application): ViewModelFactory? {
-            if (INSTANCE == null) {
-                INSTANCE = ViewModelFactory(Injection.provideRepository(application))
-            }
+            INSTANCE = INSTANCE ?: ViewModelFactory(Injection.provideRepository(application))
             return INSTANCE
         }
     }

@@ -25,7 +25,7 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
         setContentView(binding.root)
 
         viewModelFactory = ViewModelFactory.getInstance(application)
-        authViewModel = if(viewModelFactory != null) ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java] else null
+        authViewModel = ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
 
         binding.pbRegister.enable = false
         binding.ibBack.setOnClickListener { finish() }
