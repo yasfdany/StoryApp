@@ -9,21 +9,22 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.view.setPadding
 import dev.studiocloud.storyapp.App.Companion.toPx
 import dev.studiocloud.storyapp.R
 
-class PrimaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs), View.OnTouchListener{
+class SecondaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs), View.OnTouchListener{
     var enable: Boolean = true
 
     init {
         setPadding(14.toPx.toInt())
         textAlignment = TEXT_ALIGNMENT_CENTER
         stateListAnimator = null
-        background = getDrawable(context, R.drawable.primary_button)
+        background = getDrawable(context, R.drawable.secondary_button)
         isAllCaps = false
-        setTextColor(Color.WHITE)
+        setTextColor(getColor(context, R.color.primary))
         setOnTouchListener(this)
     }
 

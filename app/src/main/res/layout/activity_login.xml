@@ -15,6 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:layout_marginBottom="32dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_login_illustration"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"/>
+
             <TextView
                 android:text="@string/login_now"
                 android:textColor="@color/black"
@@ -50,10 +57,18 @@
                 android:layout_height="wrap_content" />
 
             <dev.studiocloud.storyapp.ui.components.PrimaryButton
+                android:layout_marginBottom="12dp"
                 android:layout_marginHorizontal="24dp"
                 android:id="@+id/pbLogin"
                 android:text="@string/login"
                 android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <dev.studiocloud.storyapp.ui.components.SecondaryButton
+                android:text="@string/register"
+                android:layout_marginBottom="24dp"
+                android:layout_marginHorizontal="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

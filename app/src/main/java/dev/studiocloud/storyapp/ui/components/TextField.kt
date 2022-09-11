@@ -1,6 +1,5 @@
 package dev.studiocloud.storyapp.ui.components
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
@@ -12,7 +11,6 @@ import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.util.Patterns
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageButton
@@ -50,7 +48,7 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
     private fun initErrorTextView(){
         errorTextView.textSize = 12f
         errorTextView.setTextColor(Color.RED)
-        errorTextView.setPadding(16.toPx.toInt(),6.toPx.toInt(),0,0)
+        errorTextView.setPadding(0,6.toPx.toInt(),0,0)
         errorTextView.visibility = GONE
     }
 
@@ -90,6 +88,8 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
             }
 
             errorTextView.visibility = if(errorMessage != null) VISIBLE else GONE
+            if(errorMessage != null) textFieldContainer.background = getDrawable(context, R.drawable.textfield_error_background)
+            else textFieldContainer.background =  getDrawable(context, R.drawable.textfield_background)
         }
     }
 
