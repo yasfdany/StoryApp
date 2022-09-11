@@ -23,7 +23,11 @@ import androidx.core.view.setPadding
 import androidx.core.widget.addTextChangedListener
 import dev.studiocloud.storyapp.App.Companion.toPx
 import dev.studiocloud.storyapp.R
+import dev.studiocloud.storyapp.utils.Tools
 
+interface OnTextChange{
+    fun onChange(text: String);
+}
 
 class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(context, attrs) {
     private val typedArray: TypedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.TextField, 0, 0)
@@ -36,13 +40,10 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
     private val textFieldContainer = LinearLayoutCompat(context)
     private val errorTextView = TextView(context)
     private var errorMessage: String? = null
+    private var onTextChange: OnTextChange? = null;
 
-    private fun isValidEmail(target: CharSequence?): Boolean {
-        return if (TextUtils.isEmpty(target)) {
-            false
-        } else {
-            Patterns.EMAIL_ADDRESS.matcher(target).matches()
-        }
+    fun addOnTextChange(onTextChange: OnTextChange){
+        this.onTextChange = onTextChange
     }
 
     private fun initErrorTextView(){
@@ -80,7 +81,7 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
                 }
 
                 if (inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS + 1){
-                    errorMessage = if (!isValidEmail(it)) resources.getString(R.string.email_error)
+                    errorMessage = if (!Tools().isValidEmail(it)) resources.getString(R.string.email_error)
                     else null
                 }
 
@@ -90,6 +91,8 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
             errorTextView.visibility = if(errorMessage != null) VISIBLE else GONE
             if(errorMessage != null) textFieldContainer.background = getDrawable(context, R.drawable.textfield_error_background)
             else textFieldContainer.background =  getDrawable(context, R.drawable.textfield_background)
+
+            onTextChange?.onChange(it.toString())
         }
     }
 

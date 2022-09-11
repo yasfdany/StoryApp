@@ -17,6 +17,10 @@ import dev.studiocloud.storyapp.R
 
 class SecondaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs), View.OnTouchListener{
     var enable: Boolean = true
+        set(value) {
+            alpha = if(value) 1f else 0.2f
+            field = value
+        }
 
     init {
         setPadding(14.toPx.toInt())
