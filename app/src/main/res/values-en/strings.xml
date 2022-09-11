@@ -16,4 +16,5 @@
     <string name="logout_description">Are you sure want to logout from this account?</string>
     <string name="cancel">Cancel</string>
     <string name="exit_confirmation">Press again to exit</string>
+    <string name="story_content_description">This is a picture posted by people</string>
 </resources>

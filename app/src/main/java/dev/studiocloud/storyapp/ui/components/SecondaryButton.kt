@@ -15,7 +15,7 @@ import dev.studiocloud.storyapp.App.Companion.toPx
 import dev.studiocloud.storyapp.R
 
 class SecondaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs), View.OnTouchListener{
-    var enable: Boolean = true
+    private var enable: Boolean = true
         set(value) {
             alpha = if(value) 1f else 0.2f
             field = value
@@ -63,8 +63,8 @@ class SecondaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextVie
         val scaleY = ObjectAnimator.ofFloat(this, SCALE_Y, 1f)
         val rotateY = ObjectAnimator.ofFloat(this, ROTATION_Y, 0f)
 
-        animationSet.playTogether(scaleX, scaleY, rotateY);
-        animationSet.start();
+        animationSet.playTogether(scaleX, scaleY, rotateY)
+        animationSet.start()
     }
 
     private fun animateActionDown(
@@ -80,7 +80,7 @@ class SecondaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextVie
             else if (event.x.toInt() < view.width / 3) -4f
             else 0f
         )
-        animationSet.playTogether(scaleX, scaleY, rotateY);
-        if (enable) animationSet.start();
+        animationSet.playTogether(scaleX, scaleY, rotateY)
+        if (enable) animationSet.start()
     }
 }

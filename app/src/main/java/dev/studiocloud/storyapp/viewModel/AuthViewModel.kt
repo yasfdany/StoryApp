@@ -44,7 +44,7 @@ class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
             email,
             password,
             onSuccess = {
-                user = it?.loginResult;
+                user = it?.loginResult
                 prefs?.user = it?.loginResult
                 onSuccess(it)
             },

@@ -12,7 +12,7 @@ class Prefs (context: Context) {
     var user: LoginResult? = null
         get() {
             val userJson: String? = preferences.getString(USER, "")
-            var user: LoginResult? = null;
+            var user: LoginResult? = null
 
             if(userJson != null){
                 user = gson.fromJson(userJson, LoginResult::class.java)

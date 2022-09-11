@@ -17,11 +17,16 @@
             android:layout_height="420dp">
 
             <ImageView
+                android:contentDescription="@string/story_content_description"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
                 tools:src="@drawable/dummy"
                 android:scaleType="centerCrop"
                 android:id="@+id/ivStory"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:ignore="UnusedAttribute" />
 
             <LinearLayout
                 android:paddingHorizontal="24dp"

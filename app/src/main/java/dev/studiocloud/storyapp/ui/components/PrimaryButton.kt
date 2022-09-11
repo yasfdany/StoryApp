@@ -63,8 +63,8 @@ class PrimaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(
         val scaleY = ObjectAnimator.ofFloat(this, SCALE_Y, 1f)
         val rotateY = ObjectAnimator.ofFloat(this, ROTATION_Y, 0f)
 
-        animationSet.playTogether(scaleX, scaleY, rotateY);
-        animationSet.start();
+        animationSet.playTogether(scaleX, scaleY, rotateY)
+        animationSet.start()
     }
 
     private fun animateActionDown(
@@ -80,7 +80,7 @@ class PrimaryButton(context: Context, attrs: AttributeSet?) : AppCompatTextView(
             else if (event.x.toInt() < view.width / 3) -4f
             else 0f
         )
-        animationSet.playTogether(scaleX, scaleY, rotateY);
-        if (enable) animationSet.start();
+        animationSet.playTogether(scaleX, scaleY, rotateY)
+        if (enable) animationSet.start()
     }
 }

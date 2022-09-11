@@ -24,7 +24,7 @@ import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.utils.Tools
 
 interface OnTextChange{
-    fun onChange(text: String);
+    fun onChange(text: String)
 }
 
 class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(context, attrs) {
@@ -38,7 +38,7 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
     private val textFieldContainer = LinearLayoutCompat(context)
     private val errorTextView = TextView(context)
     private var errorMessage: String? = null
-    private var onTextChange: OnTextChange? = null;
+    private var onTextChange: OnTextChange? = null
 
     fun addOnTextChange(onTextChange: OnTextChange){
         this.onTextChange = onTextChange

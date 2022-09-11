@@ -23,7 +23,7 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory = ViewModelFactory.getInstance(application)
+        viewModelFactory = ViewModelFactory.getInstance()
         authViewModel = ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
 
         binding.pbRegister.enable = false

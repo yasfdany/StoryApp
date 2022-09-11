@@ -18,7 +18,7 @@ class StoryListAdapter(
     private var context: Context,
     private var data: MutableList<StoryItem>
 ): RecyclerView.Adapter<StoryListAdapter.Holder>() {
-    var lastPosition = -1
+    private var lastPosition = -1
 
     inner class Holder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -50,8 +50,8 @@ class StoryListAdapter(
 
                 binding.viAccountContainer.setupWith(binding.root, RenderScriptBlur(context)) // or RenderEffectBlur
                     .setBlurRadius(15f)
-                binding.viAccountContainer.outlineProvider = ViewOutlineProvider.BACKGROUND;
-                binding.viAccountContainer.clipToOutline = true;
+                binding.viAccountContainer.outlineProvider = ViewOutlineProvider.BACKGROUND
+                binding.viAccountContainer.clipToOutline = true
 
                 binding.tvName.text = this.name
                 binding.tvCaption.text = this.description

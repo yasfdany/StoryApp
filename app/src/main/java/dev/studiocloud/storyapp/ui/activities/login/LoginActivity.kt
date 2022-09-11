@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 package dev.studiocloud.storyapp.ui.activities.login
 
 import android.app.ProgressDialog
@@ -15,7 +16,6 @@ import dev.studiocloud.storyapp.utils.Tools
 import dev.studiocloud.storyapp.viewModel.AuthViewModel
 import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 
-@Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity(), OnTextChange {
     private lateinit var binding: ActivityLoginBinding
     private var viewModelFactory: ViewModelFactory? = null
@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory = ViewModelFactory.getInstance(application)
+        viewModelFactory = ViewModelFactory.getInstance()
         authViewModel = ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
 
         if(authViewModel?.user != null){

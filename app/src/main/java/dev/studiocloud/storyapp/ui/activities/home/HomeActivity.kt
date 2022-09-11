@@ -2,10 +2,10 @@ package dev.studiocloud.storyapp.ui.activities.home
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -26,19 +26,19 @@ class HomeActivity : AppCompatActivity() {
     private var viewModelFactory: ViewModelFactory? = null
     private var storyViewModel: StoryViewModel? = null
     private var storyListAdapter: StoryListAdapter? = null
-    var doubleBackToExitPressedOnce = false
-    var lastSize = 0
+    private var doubleBackToExitPressedOnce = false
+    private var lastSize = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory = ViewModelFactory.getInstance(application)
+        viewModelFactory = ViewModelFactory.getInstance()
         storyViewModel = ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
         storyViewModel?.getStory(true)
 
-        storyListAdapter = StoryListAdapter(this, storyViewModel?.stories?.value ?: mutableListOf());
+        storyListAdapter = StoryListAdapter(this, storyViewModel?.stories?.value ?: mutableListOf())
         binding.rvStoryList.adapter = storyListAdapter
 
         val linearLayout = LinearLayoutManager(this)
@@ -46,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
         binding.tvInitial.text = prefs?.user?.name?.substring(0,1)
         binding.tvName.text = prefs?.user?.name
 
-        binding.viProgressLoadMore.translationY = 500f;
+        binding.viProgressLoadMore.translationY = 500f
 
         binding.rvStoryList.layoutManager = linearLayout
         binding.rvStoryList.addOnScrollListener(object: RecyclerView.OnScrollListener(){
@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
                     animateLoadMoreLoading(true)
 
                     storyViewModel?.getStory(onFinish = {
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
                             animateLoadMoreLoading(false)
                         }, 500)
                     })
@@ -84,7 +84,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         storyViewModel?.stories?.observe(this){
-            storyListAdapter?.notifyItemRangeInserted(lastSize, it.size);
+            storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
 
             lastSize = it.size
         }
@@ -94,7 +94,7 @@ class HomeActivity : AppCompatActivity() {
         if (doubleBackToExitPressedOnce) finish()
 
         doubleBackToExitPressedOnce = true
-        Handler().postDelayed({doubleBackToExitPressedOnce = false}, 2000)
+        Handler(Looper.getMainLooper()).postDelayed({doubleBackToExitPressedOnce = false}, 2000)
         Toast.makeText(this, getString(R.string.exit_confirmation), Toast.LENGTH_SHORT).show()
     }
 
