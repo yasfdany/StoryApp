@@ -61,7 +61,7 @@ class TextField(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(con
     private fun initEditText(){
         editText.hint = hint
         editText.background = null
-        editText.textSize = 14f
+        editText.textSize = 16f
         editText.layoutParams = LayoutParams(0,WRAP_CONTENT, 1f)
         editText.inputType = if(inputType > 0) inputType else InputType.TYPE_CLASS_TEXT
         editText.setPadding(18.toPx.toInt())

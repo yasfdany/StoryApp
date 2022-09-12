@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/primary_button.xml" value="0.1315" />
         <entry key="app/src/main/res/drawable/primary_oval.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/secondary_button.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/strok_oval.xml" value="0.202" />
         <entry key="app/src/main/res/drawable/textfield_background.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/textfield_error_background.xml" value="0.1315" />
         <entry key="app/src/main/res/drawable/white_oval.xml" value="0.1875" />
@@ -21,7 +22,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_story.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_story.xml" value="0.1" />
       </map>
     </option>
   </component>

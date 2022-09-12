@@ -16,6 +16,7 @@
     <string name="logout_description">Apakah kamu yakin ingin keluar dari akun ini?</string>
     <string name="cancel">Batalkan</string>
     <string name="exit_confirmation">Tekan lagi untuk keluar</string>
-    <string name="story_content_description">This is a picture posted by people</string>
+    <string name="story_content_description">Ini adalah foto yang diposting oleh orang - orang</string>
     <string name="story">story</string>
+    <string name="avatar_content_description">Ini adalah avatar dari orang yang memposting foto ini</string>
 </resources>

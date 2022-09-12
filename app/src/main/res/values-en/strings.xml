@@ -18,4 +18,5 @@
     <string name="exit_confirmation">Press again to exit</string>
     <string name="story_content_description">This is a picture posted by people</string>
     <string name="story">story</string>
+    <string name="avatar_content_description">This is avatar of people who post this</string>
 </resources>
