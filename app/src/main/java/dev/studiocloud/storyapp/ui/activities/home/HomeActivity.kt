@@ -34,24 +34,62 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory = ViewModelFactory.getInstance()
-        storyViewModel = ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
+        storyViewModel = obtainStoryViewModel()
         storyViewModel?.getStory(true)
+        setupStoryListView()
+
+        binding.ibLogout.setOnClickListener { doLogout() }
+
+        storyViewModel?.stories?.observe(this){
+            storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
+            lastSize = it.size
+        }
+
+        binding.srStoryRefresh.setOnRefreshListener {
+            storyViewModel?.getStory(true, onFinish = {
+                binding.srStoryRefresh.isRefreshing = false
+            })
+        }
+    }
+
+    private fun doLogout() {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle(getString(R.string.logout))
+        dialog.setMessage(getString(R.string.logout_description))
+        dialog.setPositiveButton(
+            getString(R.string.logout)
+        ) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+
+            prefs?.user = null
+            finish()
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        dialog.setNegativeButton(
+            getString(R.string.cancel)
+        ) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun setupStoryListView() {
+        val linearLayout = LinearLayoutManager(this)
 
         storyListAdapter = StoryListAdapter(this, storyViewModel?.stories?.value ?: mutableListOf())
         binding.rvStoryList.adapter = storyListAdapter
 
-        val linearLayout = LinearLayoutManager(this)
-
-        binding.tvInitial.text = prefs?.user?.name?.substring(0,1)
+        binding.tvInitial.text = prefs?.user?.name?.substring(0, 1)
         binding.tvName.text = prefs?.user?.name
 
         binding.viProgressLoadMore.translationY = 500f
 
         binding.rvStoryList.layoutManager = linearLayout
-        binding.rvStoryList.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+        binding.rvStoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (linearLayout.findLastCompletelyVisibleItemPosition() == (storyViewModel?.stories?.value?.size ?: 0) - 1){
+                if (linearLayout.findLastCompletelyVisibleItemPosition() == (storyViewModel?.stories?.value?.size
+                        ?: 0) - 1
+                ) {
                     animateLoadMoreLoading(true)
 
                     storyViewModel?.getStory(onFinish = {
@@ -62,32 +100,11 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         })
+    }
 
-        binding.ibLogout.setOnClickListener {
-            val dialog = AlertDialog.Builder(this)
-            dialog.setTitle(getString(R.string.logout))
-            dialog.setMessage(getString(R.string.logout_description))
-            dialog.setPositiveButton(getString(R.string.logout)
-            ) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-
-                prefs?.user = null
-                finish()
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
-            dialog.setNegativeButton(getString(R.string.cancel)
-            ) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-            dialog.show()
-        }
-
-
-        storyViewModel?.stories?.observe(this){
-            storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
-
-            lastSize = it.size
-        }
+    private fun obtainStoryViewModel(): StoryViewModel {
+        viewModelFactory = ViewModelFactory.getInstance()
+        return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
     }
 
     override fun onBackPressed() {

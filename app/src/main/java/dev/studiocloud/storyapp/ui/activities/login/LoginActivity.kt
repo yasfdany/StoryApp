@@ -21,13 +21,17 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
     private var viewModelFactory: ViewModelFactory? = null
     private var authViewModel: AuthViewModel? = null
 
+    private fun obtainAuthViewModel(): AuthViewModel{
+        viewModelFactory = ViewModelFactory.getInstance()
+        return ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory = ViewModelFactory.getInstance()
-        authViewModel = ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+        authViewModel = obtainAuthViewModel()
 
         if(authViewModel?.user != null){
             finish()
@@ -38,30 +42,31 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
         binding.sbRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
-        binding.pbLogin.setOnClickListener {
-            Tools().hideKeyboard(this)
-            val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
-            progressDialog.setMessage(getString(R.string.loading))
-            progressDialog.show()
-
-            authViewModel?.doLogin(
-                binding.tfEmail.getText(),
-                binding.tfPassword.getText(),
-                onSuccess = {
-                    progressDialog.dismiss()
-                    finish()
-                    startActivity(Intent(this, HomeActivity::class.java))
-                },
-                onFailed = {
-                    progressDialog.dismiss()
-                    val snackBar = Snackbar.make(binding.rootLoginPage,it ?: "", Snackbar.LENGTH_SHORT)
-                    snackBar.show()
-                }
-            )
-        }
-
+        binding.pbLogin.setOnClickListener { doLogin() }
         binding.tfEmail.addOnTextChange(this)
         binding.tfPassword.addOnTextChange(this)
+    }
+
+    private fun doLogin() {
+        Tools().hideKeyboard(this)
+        val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        progressDialog.setMessage(getString(R.string.loading))
+        progressDialog.show()
+
+        authViewModel?.doLogin(
+            binding.tfEmail.getText(),
+            binding.tfPassword.getText(),
+            onSuccess = {
+                progressDialog.dismiss()
+                finish()
+                startActivity(Intent(this, HomeActivity::class.java))
+            },
+            onFailed = {
+                progressDialog.dismiss()
+                val snackBar = Snackbar.make(binding.rootLoginPage, it ?: "", Snackbar.LENGTH_SHORT)
+                snackBar.show()
+            }
+        )
     }
 
     override fun onChange(text: String) {

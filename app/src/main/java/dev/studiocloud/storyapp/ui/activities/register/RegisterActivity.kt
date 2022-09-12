@@ -20,13 +20,17 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
     private var viewModelFactory: ViewModelFactory? = null
     private var authViewModel: AuthViewModel? = null
 
+    private fun obtainAuthViewModel(): AuthViewModel{
+        viewModelFactory = ViewModelFactory.getInstance()
+        return ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModelFactory = ViewModelFactory.getInstance()
-        authViewModel = ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+        authViewModel = obtainAuthViewModel()
 
         binding.pbRegister.enable = false
         binding.ibBack.setOnClickListener { finish() }
@@ -34,29 +38,32 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
         binding.tfEmail.addOnTextChange(this)
         binding.tfPassword.addOnTextChange(this)
 
-        binding.pbRegister.setOnClickListener {
-            Tools().hideKeyboard(this)
+        binding.pbRegister.setOnClickListener { doRegister() }
+    }
 
-            val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
-            progressDialog.setMessage(getString(R.string.loading))
-            progressDialog.show()
+    private fun doRegister() {
+        Tools().hideKeyboard(this)
 
-            authViewModel?.doRegister(
-                binding.tfName.getText(),
-                binding.tfEmail.getText(),
-                binding.tfPassword.getText(),
-                onSuccess = {
-                    progressDialog.dismiss()
-                    Toast.makeText(this,it?.message ?: "", Toast.LENGTH_SHORT).show()
-                    finish()
-                },
-                onFailed = {
-                    progressDialog.dismiss()
-                    val snackBar = Snackbar.make(binding.rootRegisterPage,it ?: "tst", Snackbar.LENGTH_SHORT)
-                    snackBar.show()
-                }
-            )
-        }
+        val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        progressDialog.setMessage(getString(R.string.loading))
+        progressDialog.show()
+
+        authViewModel?.doRegister(
+            binding.tfName.getText(),
+            binding.tfEmail.getText(),
+            binding.tfPassword.getText(),
+            onSuccess = {
+                progressDialog.dismiss()
+                Toast.makeText(this, it?.message ?: "", Toast.LENGTH_SHORT).show()
+                finish()
+            },
+            onFailed = {
+                progressDialog.dismiss()
+                val snackBar =
+                    Snackbar.make(binding.rootRegisterPage, it ?: "tst", Snackbar.LENGTH_SHORT)
+                snackBar.show()
+            }
+        )
     }
 
     override fun onChange(text: String) {
