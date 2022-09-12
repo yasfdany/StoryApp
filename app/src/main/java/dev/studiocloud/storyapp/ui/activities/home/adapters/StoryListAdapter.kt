@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +25,6 @@ import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 import dev.studiocloud.storyapp.databinding.ItemStoryBinding
 import dev.studiocloud.storyapp.ui.activities.detail.DetailActivity
 import dev.studiocloud.storyapp.utils.Constant
-import eightbitlab.com.blurview.RenderScriptBlur
 
 class StoryListAdapter(
     private var context: Context,
@@ -61,11 +59,6 @@ class StoryListAdapter(
                     .load(this.photoUrl)
                     .listener(glideListener(binding))
                     .into(binding.ivStory)
-
-                binding.viAccountContainer.setupWith(binding.root, RenderScriptBlur(context)) // or RenderEffectBlur
-                    .setBlurRadius(15f)
-                binding.viAccountContainer.outlineProvider = ViewOutlineProvider.BACKGROUND
-                binding.viAccountContainer.clipToOutline = true
 
                 binding.tvName.text = this.name
                 binding.tvCaption.text = this.description

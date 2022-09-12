@@ -19,4 +19,5 @@
     <string name="story_content_description">Ini adalah foto yang diposting oleh orang - orang</string>
     <string name="story">story</string>
     <string name="avatar_content_description">Ini adalah avatar dari orang yang memposting foto ini</string>
+    <string name="back_button">tombol kembali</string>
 </resources>
