@@ -20,4 +20,10 @@
     <string name="story">story</string>
     <string name="avatar_content_description">This is avatar of people who post this</string>
     <string name="back_button">back button</string>
+    <string name="need_permission">Need permission(s)</string>
+    <string name="need_permission_description">Some permissions are required to do the task.</string>
+    <string name="ok">Ok</string>
+    <string name="permission_already_granted">Permissions already granted.</string>
+    <string name="write_caption">Write caption</string>
+    <string name="upload_image">Upload Image</string>
 </resources>

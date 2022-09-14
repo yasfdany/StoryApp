@@ -1,5 +1,6 @@
 package dev.studiocloud.storyapp.data
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
@@ -88,6 +89,31 @@ class MainRepository(
                 onFailed?.invoke(message)
             }
         })
+
+        return response
+    }
+
+    override fun postNewStory(
+        photo: Uri?,
+        description: String,
+        onSuccess: (response: DefaultResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)?
+    ): LiveData<DefaultResponse?> {
+        val response: MutableLiveData<DefaultResponse?> = MutableLiveData()
+
+        remoteRepository.postNewStory(
+            photo,
+            description,
+            object : RemoteRepository.DefaultCallback{
+                override fun onDataReceived(defaultResponse: DefaultResponse?) {
+                    onSuccess(defaultResponse)
+                }
+
+                override fun onDataNotAvailable(message: String?) {
+                    onFailed?.invoke(message)
+                }
+            }
+        )
 
         return response
     }

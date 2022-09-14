@@ -1,9 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".ui.activities.upload.UploadActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="20dp"
+        android:src="@drawable/ic_round_arrow_back_24" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="24dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                app:cardElevation="0dp"
+                app:cardCornerRadius="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="420dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_pick_photo"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:gravity="center"
+                    android:background="@drawable/bg_upload_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="UnusedAttribute">
+
+                    <ImageView
+                        android:alpha="0.3"
+                        android:src="@drawable/ic_upload_photo"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_selected_image"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <dev.studiocloud.storyapp.ui.components.TextField
+                android:id="@+id/ed_add_description"
+                android:hint="@string/write_caption"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <dev.studiocloud.storyapp.ui.components.PrimaryButton
+                android:id="@+id/pb_upload_image"
+                android:layout_marginTop="24dp"
+                android:text="@string/upload_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

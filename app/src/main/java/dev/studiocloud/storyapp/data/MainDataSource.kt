@@ -1,5 +1,6 @@
 package dev.studiocloud.storyapp.data
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
@@ -26,4 +27,11 @@ interface MainDataSource {
         onSuccess: (response: StoryResponse?) -> Unit,
         onFailed: ((message: String?) -> Unit)? = null,
     ): LiveData<StoryResponse?>
+
+    fun postNewStory(
+        photo: Uri?,
+        description: String,
+        onSuccess: (response: DefaultResponse?) -> Unit,
+        onFailed: ((message: String?) -> Unit)? = null,
+    ): LiveData<DefaultResponse?>
 }

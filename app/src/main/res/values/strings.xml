@@ -20,4 +20,10 @@
     <string name="story">story</string>
     <string name="avatar_content_description">Ini adalah avatar dari orang yang memposting foto ini</string>
     <string name="back_button">tombol kembali</string>
+    <string name="need_permission">Perlu Perizinan</string>
+    <string name="need_permission_description">Beberapa perizinan dibutuhkan untuk menjalankan fitur.</string>
+    <string name="ok">Ok</string>
+    <string name="permission_already_granted">Izin sudah disetujui.</string>
+    <string name="write_caption">Tulis caption</string>
+    <string name="upload_image">Unggah Gambar</string>
 </resources>

@@ -30,6 +30,11 @@ class HomeActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private var lastSize = 0
 
+    private fun obtainStoryViewModel(): StoryViewModel {
+        viewModelFactory = ViewModelFactory.getInstance()
+        return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -42,7 +47,11 @@ class HomeActivity : AppCompatActivity() {
         binding.ibLogout.setOnClickListener { doLogout() }
 
         storyViewModel?.stories?.observe(this){
-            storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
+            if (lastSize < it.size && lastSize != it.size){
+                storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
+            } else if(lastSize > it.size && lastSize != it.size) {
+                storyListAdapter?.notifyItemRangeRemoved(0, lastSize)
+            }
             lastSize = it.size
         }
 
@@ -117,11 +126,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    private fun obtainStoryViewModel(): StoryViewModel {
-        viewModelFactory = ViewModelFactory.getInstance()
-        return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
     }
 
     override fun onBackPressed() {
