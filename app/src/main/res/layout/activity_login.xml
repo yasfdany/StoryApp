@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootLoginPage"
+    android:id="@+id/cl_login_page"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,7 +39,7 @@
                 android:layout_marginBottom="24dp"/>
 
             <dev.studiocloud.storyapp.ui.components.TextField
-                android:id="@+id/tfEmail"
+                android:id="@+id/ed_login_email"
                 android:layout_marginHorizontal="24dp"
                 android:hint="@string/enter_email"
                 android:inputType="textEmailAddress"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content" />
 
             <dev.studiocloud.storyapp.ui.components.TextField
-                android:id="@+id/tfPassword"
+                android:id="@+id/ed_login_password"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="12dp"
                 android:hint="@string/enter_password"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content" />
 
             <dev.studiocloud.storyapp.ui.components.PrimaryButton
-                android:id="@+id/pbLogin"
+                android:id="@+id/pb_login"
                 android:layout_marginBottom="12dp"
                 android:layout_marginHorizontal="24dp"
                 android:text="@string/login"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"/>
 
             <dev.studiocloud.storyapp.ui.components.SecondaryButton
-                android:id="@+id/sbRegister"
+                android:id="@+id/sb_register"
                 android:text="@string/register"
                 android:layout_marginBottom="24dp"
                 android:layout_marginHorizontal="24dp"

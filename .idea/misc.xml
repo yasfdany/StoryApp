@@ -20,9 +20,10 @@
         <entry key="app/src/main/res/font/nunito_sans.xml" value="0.209375" />
         <entry key="app/src/main/res/layout-v23/item_story.xml" value="0.17685185185185184" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_upload.xml" value="0.1423611111111111" />
         <entry key="app/src/main/res/layout/item_story.xml" value="0.1" />
       </map>
     </option>

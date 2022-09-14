@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootRegisterPage"
+    android:id="@+id/cl_register_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -25,7 +25,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/ibBack"
+                android:id="@+id/ib_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -51,14 +51,14 @@
                 android:textSize="14sp" />
 
             <dev.studiocloud.storyapp.ui.components.TextField
-                android:id="@+id/tfName"
+                android:id="@+id/ed_register_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:hint="@string/enter_name" />
 
             <dev.studiocloud.storyapp.ui.components.TextField
-                android:id="@+id/tfEmail"
+                android:id="@+id/ed_register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
@@ -67,7 +67,7 @@
                 android:inputType="textEmailAddress" />
 
             <dev.studiocloud.storyapp.ui.components.TextField
-                android:id="@+id/tfPassword"
+                android:id="@+id/ed_register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
@@ -76,7 +76,7 @@
                 android:inputType="textPassword" />
 
             <dev.studiocloud.storyapp.ui.components.PrimaryButton
-                android:id="@+id/pbRegister"
+                android:id="@+id/pb_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"

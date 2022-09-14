@@ -18,6 +18,7 @@ import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.databinding.ActivityHomeBinding
 import dev.studiocloud.storyapp.ui.activities.home.adapters.StoryListAdapter
 import dev.studiocloud.storyapp.ui.activities.login.LoginActivity
+import dev.studiocloud.storyapp.ui.activities.upload.UploadActivity
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
 import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 
@@ -45,10 +46,14 @@ class HomeActivity : AppCompatActivity() {
             lastSize = it.size
         }
 
-        binding.srStoryRefresh.setOnRefreshListener {
+        binding.srStoryRefresher.setOnRefreshListener {
             storyViewModel?.getStory(true, onFinish = {
-                binding.srStoryRefresh.isRefreshing = false
+                binding.srStoryRefresher.isRefreshing = false
             })
+        }
+
+        binding.buttonAdd.setOnClickListener {
+            startActivity(Intent(this, UploadActivity::class.java))
         }
     }
 
@@ -75,14 +80,24 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupStoryListView() {
         val linearLayout = LinearLayoutManager(this)
+        val scaleX = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_X, 0f)
+        val scaleY = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_Y, 0f)
+        val scaleReverseX = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_X, 1f)
+        val scaleReverseY = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_Y, 1f)
+
+        val scaleSet = AnimatorSet()
+        val scaleReverseSet = AnimatorSet()
+
+        scaleSet.playTogether(scaleX,scaleY)
+        scaleReverseSet.playTogether(scaleReverseX, scaleReverseY)
 
         storyListAdapter = StoryListAdapter(this, storyViewModel?.stories?.value ?: mutableListOf())
         binding.rvStoryList.adapter = storyListAdapter
 
-        binding.tvInitial.text = prefs?.user?.name?.substring(0, 1)
+        binding.tvInitialName.text = prefs?.user?.name?.substring(0, 1)
         binding.tvName.text = prefs?.user?.name
 
-        binding.viProgressLoadMore.translationY = 500f
+        binding.viLoadingMore.translationY = 500f
 
         binding.rvStoryList.layoutManager = linearLayout
         binding.rvStoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -90,10 +105,12 @@ class HomeActivity : AppCompatActivity() {
                 if (linearLayout.findLastCompletelyVisibleItemPosition() == (storyViewModel?.stories?.value?.size
                         ?: 0) - 1
                 ) {
+                    scaleSet.start()
                     animateLoadMoreLoading(true)
 
                     storyViewModel?.getStory(onFinish = {
                         Handler(Looper.getMainLooper()).postDelayed({
+                            scaleReverseSet.start()
                             animateLoadMoreLoading(false)
                         }, 500)
                     })
@@ -118,8 +135,8 @@ class HomeActivity : AppCompatActivity() {
     private fun animateLoadMoreLoading(show: Boolean) {
         val animationSet = AnimatorSet()
 
-        val translateY = ObjectAnimator.ofFloat(binding.viProgressLoadMore, View.TRANSLATION_Y, if(show) 0f else 500f)
-        val opacity = ObjectAnimator.ofFloat(binding.viProgressLoadMore, View.ALPHA, if (show) 1f else 0f)
+        val translateY = ObjectAnimator.ofFloat(binding.viLoadingMore, View.TRANSLATION_Y, if(show) 0f else 500f)
+        val opacity = ObjectAnimator.ofFloat(binding.viLoadingMore, View.ALPHA, if (show) 1f else 0f)
 
         animationSet.playTogether(translateY, opacity)
         animationSet.start()

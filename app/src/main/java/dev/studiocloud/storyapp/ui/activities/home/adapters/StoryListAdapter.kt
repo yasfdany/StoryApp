@@ -52,18 +52,18 @@ class StoryListAdapter(
                 Glide.with(context)
                     .applyDefaultRequestOptions(avatarRequestOption)
                     .load(this.photoUrl)
-                    .into(binding.ivAvatar)
+                    .into(binding.ivUserAvatar)
 
                 Glide.with(context)
                     .applyDefaultRequestOptions(storyImageRequestOption)
                     .load(this.photoUrl)
                     .listener(glideListener(binding))
-                    .into(binding.ivStory)
+                    .into(binding.ivItemPhoto)
 
-                binding.tvName.text = this.name
+                binding.tvItemName.text = this.name
                 binding.tvCaption.text = this.description
 
-                binding.ivStory.setOnClickListener {
+                binding.ivItemPhoto.setOnClickListener {
                     val optionsCompat: ActivityOptionsCompat =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(
                             itemView.context as Activity,

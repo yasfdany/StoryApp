@@ -34,9 +34,9 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
 
         binding.pbRegister.enable = false
         binding.ibBack.setOnClickListener { finish() }
-        binding.tfName.addOnTextChange(this)
-        binding.tfEmail.addOnTextChange(this)
-        binding.tfPassword.addOnTextChange(this)
+        binding.edRegisterName.addOnTextChange(this)
+        binding.edRegisterEmail.addOnTextChange(this)
+        binding.edRegisterPassword.addOnTextChange(this)
 
         binding.pbRegister.setOnClickListener { doRegister() }
     }
@@ -49,9 +49,9 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
         progressDialog.show()
 
         authViewModel?.doRegister(
-            binding.tfName.getText(),
-            binding.tfEmail.getText(),
-            binding.tfPassword.getText(),
+            binding.edRegisterName.getText(),
+            binding.edRegisterEmail.getText(),
+            binding.edRegisterPassword.getText(),
             onSuccess = {
                 progressDialog.dismiss()
                 Toast.makeText(this, it?.message ?: "", Toast.LENGTH_SHORT).show()
@@ -60,14 +60,16 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
             onFailed = {
                 progressDialog.dismiss()
                 val snackBar =
-                    Snackbar.make(binding.rootRegisterPage, it ?: "tst", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(binding.clRegisterPage, it ?: "tst", Snackbar.LENGTH_SHORT)
                 snackBar.show()
             }
         )
     }
 
     override fun onChange(text: String) {
-        val isButtonEnable = binding.tfName.getText().length >= 3 && Tools().isValidEmail(binding.tfEmail.getText()) && binding.tfPassword.getText().length >= 6
+        val isButtonEnable = binding.edRegisterName.getText().length >= 3 &&
+                Tools().isValidEmail(binding.edRegisterEmail.getText()) &&
+                binding.edRegisterPassword.getText().length >= 6
         binding.pbRegister.enable = isButtonEnable
     }
 }

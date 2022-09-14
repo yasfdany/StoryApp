@@ -34,13 +34,13 @@ class DetailActivity : AppCompatActivity() {
         }
 
         if (storyItem != null){
-            binding.tvName.text = storyItem.name
-            binding.tvDescription.text = storyItem.description
+            binding.tvDetailName.text = storyItem.name
+            binding.tvDetailDescription.text = storyItem.description
 
             Glide.with(this)
                 .applyDefaultRequestOptions(avatarRequestOption)
                 .load(storyItem.photoUrl)
-                .into(binding.ivAvatar)
+                .into(binding.ivUserAvatar)
 
             Glide.with(this)
                 .applyDefaultRequestOptions(
@@ -51,7 +51,7 @@ class DetailActivity : AppCompatActivity() {
                 )
                 .load(storyItem.photoUrl)
                 .listener(glideListener())
-                .into(binding.ivStory)
+                .into(binding.ivDetailPhoto)
         }
     }
 

@@ -43,8 +43,8 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
         binding.pbLogin.setOnClickListener { doLogin() }
-        binding.tfEmail.addOnTextChange(this)
-        binding.tfPassword.addOnTextChange(this)
+        binding.edLoginEmail.addOnTextChange(this)
+        binding.edLoginPassword.addOnTextChange(this)
     }
 
     private fun doLogin() {
@@ -54,8 +54,8 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
         progressDialog.show()
 
         authViewModel?.doLogin(
-            binding.tfEmail.getText(),
-            binding.tfPassword.getText(),
+            binding.edLoginEmail.getText(),
+            binding.edLoginPassword.getText(),
             onSuccess = {
                 progressDialog.dismiss()
                 finish()
@@ -63,14 +63,14 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
             },
             onFailed = {
                 progressDialog.dismiss()
-                val snackBar = Snackbar.make(binding.rootLoginPage, it ?: "", Snackbar.LENGTH_SHORT)
+                val snackBar = Snackbar.make(binding.clLoginPage, it ?: "", Snackbar.LENGTH_SHORT)
                 snackBar.show()
             }
         )
     }
 
     override fun onChange(text: String) {
-        val isButtonEnable = Tools().isValidEmail(binding.tfEmail.getText()) && binding.tfPassword.getText().length >= 6
+        val isButtonEnable = Tools().isValidEmail(binding.edLoginEmail.getText()) && binding.edLoginPassword.getText().length >= 6
         binding.pbLogin.enable = isButtonEnable
     }
 }
