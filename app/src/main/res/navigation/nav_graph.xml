@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="dev.studiocloud.storyapp.ui.fragments.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/navigateLoginToRegister"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/enter_slide_up"
+            app:exitAnim="@anim/exit_scale_up"
+            app:popEnterAnim="@anim/enter_scale_down"
+            app:popExitAnim="@anim/exit_slide_down" />
+        <action
+            android:id="@+id/navigateLoginToHome"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/enter_slide_up"
+            app:exitAnim="@anim/exit_scale_up"
+            app:popEnterAnim="@anim/enter_scale_down"
+            app:popExitAnim="@anim/exit_slide_down"/>
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="dev.studiocloud.storyapp.ui.fragments.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="dev.studiocloud.storyapp.ui.fragments.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/navigateLogout"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/enter_slide_up"
+            app:exitAnim="@anim/exit_scale_up"
+            app:popEnterAnim="@anim/enter_scale_down"
+            app:popExitAnim="@anim/exit_slide_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="dev.studiocloud.storyapp.ui.fragments.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/navigateSplashToLogin"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/navigateSplashToHome"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+</navigation>
