@@ -1,4 +1,4 @@
-package dev.studiocloud.storyapp.ui.fragments.detail
+package dev.studiocloud.storyapp.ui.activities.detail
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle

@@ -28,9 +28,7 @@ open class RemoteRepository {
 
         fun getInstance(): RemoteRepository? {
             if (INSTANCE == null) {
-                synchronized (RemoteRepository::class.java){
-                    INSTANCE = INSTANCE ?: RemoteRepository()
-                }
+                INSTANCE = RemoteRepository()
             }
             return INSTANCE
         }

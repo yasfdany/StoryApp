@@ -1,33 +1,29 @@
-package dev.studiocloud.storyapp.ui.fragments.home
+package dev.studiocloud.storyapp.ui.activities.home
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.R
-import dev.studiocloud.storyapp.databinding.FragmentHomeBinding
-import dev.studiocloud.storyapp.di.Injection
-import dev.studiocloud.storyapp.ui.fragments.home.adapters.StoryListAdapter
+import dev.studiocloud.storyapp.databinding.ActivityHomeBinding
+import dev.studiocloud.storyapp.ui.activities.home.adapters.StoryListAdapter
+import dev.studiocloud.storyapp.ui.activities.login.LoginActivity
+import dev.studiocloud.storyapp.ui.activities.upload.UploadActivity
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
 import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 
-class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
-    private lateinit var navController: NavController
+class HomeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHomeBinding
     private var viewModelFactory: ViewModelFactory? = null
     private var storyViewModel: StoryViewModel? = null
     private var storyListAdapter: StoryListAdapter? = null
@@ -35,17 +31,14 @@ class HomeFragment : Fragment() {
     private var lastSize = 0
 
     private fun obtainStoryViewModel(): StoryViewModel {
-        viewModelFactory = Injection.provideViewModelFactory()
+        viewModelFactory = ViewModelFactory.getInstance()
         return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        navController = findNavController()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         storyViewModel = obtainStoryViewModel()
         storyViewModel?.getStory(true)
@@ -53,7 +46,7 @@ class HomeFragment : Fragment() {
 
         binding.ibLogout.setOnClickListener { doLogout() }
 
-        storyViewModel?.stories?.observe(requireActivity()){
+        storyViewModel?.stories?.observe(this){
             if (lastSize < it.size && lastSize != it.size){
                 storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
             } else if(lastSize > it.size && lastSize != it.size) {
@@ -69,23 +62,12 @@ class HomeFragment : Fragment() {
         }
 
         binding.buttonAdd.setOnClickListener {
+            startActivity(Intent(this, UploadActivity::class.java))
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                if (doubleBackToExitPressedOnce) requireActivity().finish()
-
-                doubleBackToExitPressedOnce = true
-                Handler(Looper.getMainLooper()).postDelayed({doubleBackToExitPressedOnce = false}, 2000)
-                Toast.makeText(activity, getString(R.string.exit_confirmation), Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        return binding.root
     }
 
     private fun doLogout() {
-        val dialog = AlertDialog.Builder(requireActivity())
+        val dialog = AlertDialog.Builder(this)
         dialog.setTitle(getString(R.string.logout))
         dialog.setMessage(getString(R.string.logout_description))
         dialog.setPositiveButton(
@@ -94,7 +76,8 @@ class HomeFragment : Fragment() {
             dialogInterface.dismiss()
 
             prefs?.user = null
-            navController.navigate(R.id.navigateLogout)
+            finish()
+            startActivity(Intent(this, LoginActivity::class.java))
         }
         dialog.setNegativeButton(
             getString(R.string.cancel)
@@ -105,7 +88,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupStoryListView() {
-        val linearLayout = LinearLayoutManager(activity)
+        val linearLayout = LinearLayoutManager(this)
         val scaleX = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_X, 0f)
         val scaleY = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_Y, 0f)
         val scaleReverseX = ObjectAnimator.ofFloat(binding.buttonAdd, View.SCALE_X, 1f)
@@ -117,7 +100,7 @@ class HomeFragment : Fragment() {
         scaleSet.playTogether(scaleX,scaleY)
         scaleReverseSet.playTogether(scaleReverseX, scaleReverseY)
 
-        storyListAdapter = StoryListAdapter(requireActivity(), storyViewModel?.stories?.value ?: mutableListOf())
+        storyListAdapter = StoryListAdapter(this, storyViewModel?.stories?.value ?: mutableListOf())
         binding.rvStoryList.adapter = storyListAdapter
 
         binding.tvInitialName.text = prefs?.user?.name?.substring(0, 1)
@@ -143,6 +126,14 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) finish()
+
+        doubleBackToExitPressedOnce = true
+        Handler(Looper.getMainLooper()).postDelayed({doubleBackToExitPressedOnce = false}, 2000)
+        Toast.makeText(this, getString(R.string.exit_confirmation), Toast.LENGTH_SHORT).show()
     }
 
     private fun animateLoadMoreLoading(show: Boolean) {

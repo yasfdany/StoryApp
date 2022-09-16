@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package dev.studiocloud.storyapp.ui.fragments.upload
+package dev.studiocloud.storyapp.ui.activities.upload
 
 import android.Manifest
 import android.app.Activity
@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.databinding.ActivityUploadBinding
-import dev.studiocloud.storyapp.di.Injection
 import dev.studiocloud.storyapp.utils.ManagePermissions
 import dev.studiocloud.storyapp.utils.Tools
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
@@ -42,7 +41,7 @@ class UploadActivity : AppCompatActivity() {
         }
 
     private fun obtainStoryViewModel(): StoryViewModel {
-        viewModelFactory = Injection.provideViewModelFactory()
+        viewModelFactory = ViewModelFactory.getInstance()
         return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
     }
 

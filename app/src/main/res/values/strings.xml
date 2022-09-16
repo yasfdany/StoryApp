@@ -26,7 +26,4 @@
     <string name="permission_already_granted">Izin sudah disetujui.</string>
     <string name="write_caption">Tulis caption</string>
     <string name="upload_image">Unggah Gambar</string>
-    <string name="illustration_login">Ilustrasi seorang laki - laki dengan rencana liburan</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

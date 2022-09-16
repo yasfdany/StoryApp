@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package dev.studiocloud.storyapp.ui.fragments.home.adapters
+package dev.studiocloud.storyapp.ui.activities.home.adapters
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -23,7 +23,7 @@ import com.bumptech.glide.request.target.Target
 import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 import dev.studiocloud.storyapp.databinding.ItemStoryBinding
-import dev.studiocloud.storyapp.ui.fragments.detail.DetailActivity
+import dev.studiocloud.storyapp.ui.activities.detail.DetailActivity
 import dev.studiocloud.storyapp.utils.Constant
 
 class StoryListAdapter(

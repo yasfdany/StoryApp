@@ -4,8 +4,8 @@
     package="dev.studiocloud.storyapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".App"
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryApp.NoActionBar"
         tools:targetApi="31">
-        <!--<activity
+        <activity
             android:name=".ui.activities.upload.UploadActivity"
             android:exported="false" />
         <activity
@@ -27,9 +27,9 @@
         <activity
             android:name=".ui.activities.register.RegisterActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustNothing" />-->
+            android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activities.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
