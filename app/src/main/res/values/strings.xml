@@ -25,12 +25,12 @@
     <string name="ok">OK</string>
     <string name="write_caption">Tulis caption</string>
     <string name="upload_image">Unggah Gambar</string>
-    <string name="story_picture_description">this is picture of the story</string>
-    <string name="logout_button_description">this is logout button</string>
-    <string name="upload_photo_description">this is upload photo button</string>
-    <string name="login_illustration_description">this is image of login illustration</string>
-    <string name="illustration_register_description">this is illustration image on register page</string>
-    <string name="camera_icon_description">this is camera icon</string>
-    <string name="preview_image_picker_description">this is picked image preview</string>
-    <string name="back_button_description">this is for navigation to previous page</string>
+    <string name="story_picture_description">Ini adalah gambar dari cerita</string>
+    <string name="logout_button_description">Ini adalah tombol logout button</string>
+    <string name="upload_photo_description">ini adalah tombol upload foto</string>
+    <string name="login_illustration_description">ini adalah gambar ilustrasi di halaman login</string>
+    <string name="illustration_register_description">Ini adalah gambar ilustrasi di halaman register</string>
+    <string name="camera_icon_description">Ini adalah ikon kamera</string>
+    <string name="preview_image_picker_description">Ini adalah gambar preview</string>
+    <string name="back_button_description">Ini adalah tombol untuk kembali ke halaman sebelumhya</string>
 </resources>

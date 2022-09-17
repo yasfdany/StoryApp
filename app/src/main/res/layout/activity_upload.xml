@@ -78,7 +78,7 @@
                 android:inputType="textMultiLine" />
 
             <dev.studiocloud.storyapp.ui.components.PrimaryButton
-                android:id="@+id/pb_upload_image"
+                android:id="@+id/button_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

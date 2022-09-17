@@ -77,7 +77,7 @@ class UploadActivity : AppCompatActivity() {
                 })
         }
 
-        binding.pbUploadImage.setOnClickListener {
+        binding.buttonAdd.setOnClickListener {
             Tools().hideKeyboard(this)
             progressDialog.show()
 
