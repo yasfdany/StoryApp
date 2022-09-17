@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:layoutDescription="@xml/activity_upload_scene2"
+    app:layoutDescription="@xml/activity_upload_scene"
     tools:context=".ui.activities.upload.UploadActivity">
 
     <ImageButton
