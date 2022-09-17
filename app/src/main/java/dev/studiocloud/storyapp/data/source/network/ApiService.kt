@@ -4,6 +4,7 @@ import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -34,7 +35,7 @@ interface ApiService {
     @POST("stories")
     fun postNewStory(
         @Header("Authorization") Authorization: String,
-        @Part("description") description: String,
+        @Part("description") description: RequestBody,
         @Part photo: MultipartBody.Part
     ): Call<DefaultResponse?>?
 }

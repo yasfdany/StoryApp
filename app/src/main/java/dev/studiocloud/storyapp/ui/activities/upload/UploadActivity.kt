@@ -24,6 +24,8 @@ import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 class UploadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUploadBinding
     private lateinit var managePermissions: ManagePermissions
+    private lateinit var progressDialog: ProgressDialog
+
     private var viewModelFactory: ViewModelFactory? = null
     private var storyViewModel: StoryViewModel? = null
     private val permissionsRequestCode = 123
@@ -49,6 +51,8 @@ class UploadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        progressDialog.setMessage(getString(R.string.loading))
 
         storyViewModel = obtainStoryViewModel()
 
@@ -75,8 +79,6 @@ class UploadActivity : AppCompatActivity() {
 
         binding.pbUploadImage.setOnClickListener {
             Tools().hideKeyboard(this)
-            val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
-            progressDialog.setMessage(getString(R.string.loading))
             progressDialog.show()
 
             storyViewModel?.postNewStory(
@@ -85,6 +87,7 @@ class UploadActivity : AppCompatActivity() {
                 onSuccess = {
                     progressDialog.hide()
                     Toast.makeText(this, it?.message, Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK)
                     finish()
                 },
                 onFailed = {

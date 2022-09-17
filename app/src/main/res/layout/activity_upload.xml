@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.activities.upload.UploadActivity">
 
@@ -12,69 +12,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:contentDescription="@string/back_button_description"
         android:padding="20dp"
-        android:src="@drawable/ic_round_arrow_back_24" />
+        android:src="@drawable/ic_round_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ib_back">
 
         <LinearLayout
-            android:padding="24dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <androidx.cardview.widget.CardView
-                app:cardElevation="0dp"
-                app:cardCornerRadius="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="420dp">
+                android:layout_height="420dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:id="@+id/ll_pick_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_upload_button"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?selectableItemBackground"
                     android:gravity="center"
-                    android:background="@drawable/bg_upload_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     tools:ignore="UnusedAttribute">
 
                     <ImageView
-                        android:alpha="0.3"
-                        android:src="@drawable/ic_upload_photo"
                         android:layout_width="56dp"
-                        android:layout_height="56dp"/>
+                        android:layout_height="56dp"
+                        android:alpha="0.3"
+                        android:contentDescription="@string/camera_icon_description"
+                        android:src="@drawable/ic_upload_photo"
+                        tools:ignore="ImageContrastCheck" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/iv_selected_image"
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/preview_image_picker_description"
+                    android:scaleType="centerCrop"
+                    tools:ignore="ImageContrastCheck" />
 
             </androidx.cardview.widget.CardView>
 
             <dev.studiocloud.storyapp.ui.components.TextField
                 android:id="@+id/ed_add_description"
-                android:hint="@string/write_caption"
-                android:inputType="textMultiLine"
-                android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="@string/write_caption"
+                android:inputType="textMultiLine" />
 
             <dev.studiocloud.storyapp.ui.components.PrimaryButton
                 android:id="@+id/pb_upload_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="@string/upload_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

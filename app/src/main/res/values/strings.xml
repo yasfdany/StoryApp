@@ -22,8 +22,15 @@
     <string name="back_button">tombol kembali</string>
     <string name="need_permission">Perlu Perizinan</string>
     <string name="need_permission_description">Beberapa perizinan dibutuhkan untuk menjalankan fitur.</string>
-    <string name="ok">Ok</string>
-    <string name="permission_already_granted">Izin sudah disetujui.</string>
+    <string name="ok">OK</string>
     <string name="write_caption">Tulis caption</string>
     <string name="upload_image">Unggah Gambar</string>
+    <string name="story_picture_description">this is picture of the story</string>
+    <string name="logout_button_description">this is logout button</string>
+    <string name="upload_photo_description">this is upload photo button</string>
+    <string name="login_illustration_description">this is image of login illustration</string>
+    <string name="illustration_register_description">this is illustration image on register page</string>
+    <string name="camera_icon_description">this is camera icon</string>
+    <string name="preview_image_picker_description">this is picked image preview</string>
+    <string name="back_button_description">this is for navigation to previous page</string>
 </resources>

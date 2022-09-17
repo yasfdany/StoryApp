@@ -2,12 +2,15 @@ package dev.studiocloud.storyapp.ui.activities.home
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -29,12 +32,17 @@ class HomeActivity : AppCompatActivity() {
     private var storyListAdapter: StoryListAdapter? = null
     private var doubleBackToExitPressedOnce = false
     private var lastSize = 0
-
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            storyViewModel?.getStory(true)
+        }
+    }
     private fun obtainStoryViewModel(): StoryViewModel {
         viewModelFactory = ViewModelFactory.getInstance()
         return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -47,10 +55,10 @@ class HomeActivity : AppCompatActivity() {
         binding.ibLogout.setOnClickListener { doLogout() }
 
         storyViewModel?.stories?.observe(this){
-            if (lastSize < it.size && lastSize != it.size){
+            if (lastSize < it.size){
                 storyListAdapter?.notifyItemRangeInserted(lastSize, it.size)
-            } else if(lastSize > it.size && lastSize != it.size) {
-                storyListAdapter?.notifyItemRangeRemoved(0, lastSize)
+            } else {
+                storyListAdapter?.notifyDataSetChanged()
             }
             lastSize = it.size
         }
@@ -62,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.buttonAdd.setOnClickListener {
-            startActivity(Intent(this, UploadActivity::class.java))
+            resultLauncher.launch(Intent(this, UploadActivity::class.java))
         }
     }
 

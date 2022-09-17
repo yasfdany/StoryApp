@@ -12,12 +12,15 @@ import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.Reader
+
 
 open class RemoteRepository {
     private val apiClient: ApiService? = ApiClient().get()
@@ -168,14 +171,16 @@ open class RemoteRepository {
         if(photo?.path != null){
             val file = File(photo.path!!)
 
-            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull());
+            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val body = MultipartBody.Part.createFormData("photo", file.name, requestFile)
+            val descriptionBody: RequestBody =
+                description.toRequestBody("text/plain".toMediaTypeOrNull())
 
             apiClient?.postNewStory(
                 Authorization = "Bearer $token",
-                description = description,
+                description = descriptionBody,
                 photo = body,
-            )?.enqueue(listener);
+            )?.enqueue(listener)
         }
 
         return data

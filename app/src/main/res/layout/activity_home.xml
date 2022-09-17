@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.activities.home.HomeActivity">
 
     <LinearLayout
@@ -46,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:background="#00FFFFFF"
                 android:padding="10dp"
-                android:src="@drawable/ic_logout_24" />
+                android:src="@drawable/ic_logout_24"
+                android:contentDescription="@string/logout_button_description" />
 
         </LinearLayout>
 
@@ -88,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/upload_photo_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,10 +21,7 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
         mainRepository?.postNewStory(
             photo,
             description,
-            onSuccess = {
-                getStory(true)
-                onSuccess(it)
-            },
+            onSuccess = { onSuccess(it) },
             onFailed,
         )
     }

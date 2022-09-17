@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dev.studiocloud.storyapp.R
@@ -30,6 +31,7 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         authViewModel = obtainAuthViewModel()
 
