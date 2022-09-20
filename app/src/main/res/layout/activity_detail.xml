@@ -17,7 +17,6 @@
         android:src="@drawable/ic_round_arrow_back_24" />
 
     <ScrollView
-        android:id="@+id/sv_main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,7 +28,6 @@
             android:paddingVertical="12dp">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cv_container"
                 android:layout_width="match_parent"
                 android:layout_height="420dp"
                 android:layout_marginTop="6dp"

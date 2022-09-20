@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import dev.studiocloud.storyapp.utils.Prefs
 
+@SuppressWarnings("UnusedReturnValue")
 class App: Application() {
     companion object {
         var prefs: Prefs? = null

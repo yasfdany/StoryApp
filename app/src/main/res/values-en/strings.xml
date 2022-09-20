@@ -19,7 +19,6 @@
     <string name="story_content_description">This is a picture posted by people</string>
     <string name="story">story</string>
     <string name="avatar_content_description">This is avatar of people who post this</string>
-    <string name="back_button">back button</string>
     <string name="need_permission">Need permission(s)</string>
     <string name="need_permission_description">Some permissions are required to do the task.</string>
     <string name="ok">OK</string>
@@ -33,4 +32,5 @@
     <string name="camera_icon_description">this is camera icon</string>
     <string name="preview_image_picker_description">this is picked image preview</string>
     <string name="back_button_description">this is for navigation to previous page</string>
+    <string name="app_widget_description">This is StackView of story</string>
 </resources>

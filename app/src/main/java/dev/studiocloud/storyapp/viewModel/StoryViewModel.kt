@@ -3,6 +3,7 @@ package dev.studiocloud.storyapp.viewModel
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.data.MainRepository
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
@@ -30,6 +31,9 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
         reset: Boolean = false,
         onFinish: (() -> Unit)? = null,
     ){
+        if(prefs?.stories != null){
+            stories.value?.addAll(prefs?.stories!!)
+        }
         if(reset){
             endOfPage = false
             page = 1
@@ -49,6 +53,10 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
 
                 page++
                 endOfPage = it?.listStory?.isEmpty() == true
+
+                if(stories.value != null){
+                    prefs?.stories = stories.value!!
+                }
                 onFinish?.invoke()
             },
             onFailed = {

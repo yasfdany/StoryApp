@@ -19,7 +19,6 @@
     <string name="story_content_description">Ini adalah foto yang diposting oleh orang - orang</string>
     <string name="story">story</string>
     <string name="avatar_content_description">Ini adalah avatar dari orang yang memposting foto ini</string>
-    <string name="back_button">tombol kembali</string>
     <string name="need_permission">Perlu Perizinan</string>
     <string name="need_permission_description">Beberapa perizinan dibutuhkan untuk menjalankan fitur.</string>
     <string name="ok">OK</string>
@@ -32,5 +31,6 @@
     <string name="illustration_register_description">Ini adalah gambar ilustrasi di halaman register</string>
     <string name="camera_icon_description">Ini adalah ikon kamera</string>
     <string name="preview_image_picker_description">Ini adalah gambar preview</string>
-    <string name="back_button_description">Ini adalah tombol untuk kembali ke halaman sebelumhya</string>
+    <string name="back_button_description">Ini adalah tombol untuk kembali ke halaman sebelumnya</string>
+    <string name="app_widget_description">ini adalah StackView dari story</string>
 </resources>

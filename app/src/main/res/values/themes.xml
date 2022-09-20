@@ -20,7 +20,8 @@
         <item name="colorAccent">@color/primary</item>
     </style>
 
-    <style parent="Theme.StoryApp" name="Theme.StoryApp.NoActionBar">
+    <style name="Theme.StoryApp.NoActionBar" parent="Theme.StoryApp">
         <item name="fontFamily">@font/nunito_sans</item>
     </style>
+
 </resources>
