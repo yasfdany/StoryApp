@@ -11,8 +11,6 @@ import dev.studiocloud.storyapp.data.services.widgets.StackWidgetService
 
 class StoryStackWidget : AppWidgetProvider() {
     companion object {
-        const val EXTRA_ITEM = "dev.studiocloud.storyapp.EXTRA_ITEM"
-
         private fun updateAppWidget(
             context: Context,
             appWidgetManager: AppWidgetManager,
