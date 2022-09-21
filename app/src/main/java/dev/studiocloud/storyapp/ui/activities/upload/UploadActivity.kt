@@ -26,7 +26,7 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var managePermissions: ManagePermissions
     private lateinit var progressDialog: ProgressDialog
 
-    private var viewModelFactory: ViewModelFactory? = null
+    private lateinit var viewModelFactory: ViewModelFactory
     private var storyViewModel: StoryViewModel? = null
     private val permissionsRequestCode = 123
     private var selectedImage: Uri? = null
@@ -44,7 +44,7 @@ class UploadActivity : AppCompatActivity() {
 
     private fun obtainStoryViewModel(): StoryViewModel {
         viewModelFactory = ViewModelFactory.getInstance()
-        return ViewModelProvider(this, viewModelFactory!!)[StoryViewModel::class.java]
+        return ViewModelProvider(this, viewModelFactory)[StoryViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,40 +61,47 @@ class UploadActivity : AppCompatActivity() {
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
         managePermissions = ManagePermissions(this,list, permissionsRequestCode)
+        setupViews()
+    }
 
-        binding.ibBack.setOnClickListener { finish() }
+    private fun pickImage(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            managePermissions.checkPermissions(onGranted = {
+                ImagePicker.with(this)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .createIntent { intent ->
+                        startForProfileImageResult.launch(intent)
+                    }
+            })
+    }
 
-        binding.llPickPhoto.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                managePermissions.checkPermissions(onGranted = {
-                    ImagePicker.with(this)
-                        .crop()
-                        .compress(1024)
-                        .maxResultSize(1080, 1080)
-                        .createIntent { intent ->
-                            startForProfileImageResult.launch(intent)
-                        }
-                })
-        }
+    private fun postStory(){
+        Tools().hideKeyboard(this)
+        progressDialog.show()
 
-        binding.buttonAdd.setOnClickListener {
-            Tools().hideKeyboard(this)
-            progressDialog.show()
+        storyViewModel?.postNewStory(
+            selectedImage,
+            binding.edAddDescription.getText(),
+            onSuccess = {
+                progressDialog.hide()
+                Toast.makeText(this, it?.message, Toast.LENGTH_SHORT).show()
+                setResult(RESULT_OK)
+                finish()
+            },
+            onFailed = {
+                progressDialog.hide()
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
-            storyViewModel?.postNewStory(
-                selectedImage,
-                binding.edAddDescription.getText(),
-                onSuccess = {
-                    progressDialog.hide()
-                    Toast.makeText(this, it?.message, Toast.LENGTH_SHORT).show()
-                    setResult(Activity.RESULT_OK)
-                    finish()
-                },
-                onFailed = {
-                    progressDialog.hide()
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                }
-            )
+    private fun setupViews() {
+        with(binding){
+            ibBack.setOnClickListener { finish() }
+            llPickPhoto.setOnClickListener { pickImage() }
+            buttonAdd.setOnClickListener { postStory() }
         }
     }
 }

@@ -19,12 +19,12 @@ import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 
 class LoginActivity : AppCompatActivity(), OnTextChange {
     private lateinit var binding: ActivityLoginBinding
-    private var viewModelFactory: ViewModelFactory? = null
+    private lateinit var viewModelFactory: ViewModelFactory
     private var authViewModel: AuthViewModel? = null
 
     private fun obtainAuthViewModel(): AuthViewModel{
         viewModelFactory = ViewModelFactory.getInstance()
-        return ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+        return ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +40,15 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
             startActivity(Intent(this, HomeActivity::class.java))
         }
 
-        binding.pbLogin.enable = false
-        binding.sbRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+        with(binding){
+            pbLogin.enable = false
+            sbRegister.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
+            pbLogin.setOnClickListener { doLogin() }
+            edLoginEmail.addOnTextChange(this@LoginActivity)
+            edLoginPassword.addOnTextChange(this@LoginActivity)
         }
-        binding.pbLogin.setOnClickListener { doLogin() }
-        binding.edLoginEmail.addOnTextChange(this)
-        binding.edLoginPassword.addOnTextChange(this)
     }
 
     private fun doLogin() {

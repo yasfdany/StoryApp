@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -27,9 +28,10 @@ import dev.studiocloud.storyapp.ui.activities.detail.DetailActivity
 import dev.studiocloud.storyapp.utils.Constant
 
 class StoryListAdapter(
-    private var context: Context,
-    private var data: MutableList<StoryItem>
+    private val context: Context,
+    data: MutableList<StoryItem>
 ): RecyclerView.Adapter<StoryListAdapter.Holder>() {
+    private val storyData = mutableListOf<StoryItem>()
     private var lastPosition = -1
     private val avatarRequestOption = RequestOptions()
         .override(56,56)
@@ -38,6 +40,10 @@ class StoryListAdapter(
         .placeholder(R.drawable.placeholder)
         .override(500,500)
         .centerCrop()
+
+    init {
+        storyData.addAll(data)
+    }
 
     inner class Holder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -48,7 +54,7 @@ class StoryListAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         with(holder){
-            with(data[position]){
+            with(storyData[position]){
                 Glide.with(context)
                     .applyDefaultRequestOptions(avatarRequestOption)
                     .load(this.photoUrl)
@@ -81,7 +87,16 @@ class StoryListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return storyData.size
+    }
+
+    fun updateStoryListItems(story: List<StoryItem>){
+        val diffCallback = StoryDiffCallback(storyData, story)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
+
+        storyData.clear()
+        storyData.addAll(story)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     private fun glideListener(

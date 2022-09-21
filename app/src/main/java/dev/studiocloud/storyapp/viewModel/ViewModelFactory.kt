@@ -7,10 +7,9 @@ import dev.studiocloud.storyapp.di.Injection
 
 class ViewModelFactory(private val mainRepository: MainRepository?) : ViewModelProvider.Factory {
     companion object{
-        private var INSTANCE: ViewModelFactory? = null
+        private var INSTANCE: ViewModelFactory = ViewModelFactory(Injection.provideRepository())
 
-        fun getInstance(): ViewModelFactory? {
-            INSTANCE = INSTANCE ?: ViewModelFactory(Injection.provideRepository())
+        fun getInstance(): ViewModelFactory {
             return INSTANCE
         }
     }

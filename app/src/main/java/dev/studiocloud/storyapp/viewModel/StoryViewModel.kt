@@ -13,6 +13,12 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
     private var page = 1
     private var endOfPage = false
 
+    init {
+        if(prefs?.stories != null){
+            stories.value?.addAll(prefs?.stories!!)
+        }
+    }
+
     fun postNewStory(
         photo: Uri?,
         description: String,
@@ -31,9 +37,6 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
         reset: Boolean = false,
         onFinish: (() -> Unit)? = null,
     ){
-        if(prefs?.stories != null){
-            stories.value?.addAll(prefs?.stories!!)
-        }
         if(reset){
             endOfPage = false
             page = 1

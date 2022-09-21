@@ -1,6 +1,7 @@
 package dev.studiocloud.storyapp.data.source.network
 
 import com.google.gson.GsonBuilder
+import dev.studiocloud.storyapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +15,11 @@ class ApiClient {
     private var retrofit: Retrofit? = null
 
     fun get(): ApiService? {
-        val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val loggingInterceptor = if(BuildConfig.DEBUG) {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        } else {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+        }
 
         val client = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.MINUTES)

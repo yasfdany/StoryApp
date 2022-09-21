@@ -17,12 +17,12 @@ import dev.studiocloud.storyapp.viewModel.ViewModelFactory
 
 class RegisterActivity : AppCompatActivity(), OnTextChange {
     private lateinit var binding: ActivityRegisterBinding
-    private var viewModelFactory: ViewModelFactory? = null
+    private lateinit var viewModelFactory: ViewModelFactory
     private var authViewModel: AuthViewModel? = null
 
     private fun obtainAuthViewModel(): AuthViewModel{
         viewModelFactory = ViewModelFactory.getInstance()
-        return ViewModelProvider(this, viewModelFactory!!)[AuthViewModel::class.java]
+        return ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +32,15 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
 
         authViewModel = obtainAuthViewModel()
 
-        binding.pbRegister.enable = false
-        binding.ibBack.setOnClickListener { finish() }
-        binding.edRegisterName.addOnTextChange(this)
-        binding.edRegisterEmail.addOnTextChange(this)
-        binding.edRegisterPassword.addOnTextChange(this)
+        with(binding){
+            pbRegister.enable = false
+            ibBack.setOnClickListener { finish() }
+            edRegisterName.addOnTextChange(this@RegisterActivity)
+            edRegisterEmail.addOnTextChange(this@RegisterActivity)
+            edRegisterPassword.addOnTextChange(this@RegisterActivity)
 
-        binding.pbRegister.setOnClickListener { doRegister() }
+            pbRegister.setOnClickListener { doRegister() }
+        }
     }
 
     private fun doRegister() {
@@ -48,28 +50,32 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
         progressDialog.setMessage(getString(R.string.loading))
         progressDialog.show()
 
-        authViewModel?.doRegister(
-            binding.edRegisterName.getText(),
-            binding.edRegisterEmail.getText(),
-            binding.edRegisterPassword.getText(),
-            onSuccess = {
-                progressDialog.dismiss()
-                Toast.makeText(this, it?.message ?: "", Toast.LENGTH_SHORT).show()
-                finish()
-            },
-            onFailed = {
-                progressDialog.dismiss()
-                val snackBar =
-                    Snackbar.make(binding.clRegisterPage, it ?: "tst", Snackbar.LENGTH_SHORT)
-                snackBar.show()
-            }
-        )
+        with(binding){
+            authViewModel?.doRegister(
+                edRegisterName.getText(),
+                edRegisterEmail.getText(),
+                edRegisterPassword.getText(),
+                onSuccess = {
+                    progressDialog.dismiss()
+                    Toast.makeText(this@RegisterActivity, it?.message ?: "", Toast.LENGTH_SHORT).show()
+                    finish()
+                },
+                onFailed = {
+                    progressDialog.dismiss()
+                    val snackBar =
+                        Snackbar.make(clRegisterPage, it ?: "tst", Snackbar.LENGTH_SHORT)
+                    snackBar.show()
+                }
+            )
+        }
     }
 
     override fun onChange(text: String) {
-        val isButtonEnable = binding.edRegisterName.getText().length >= 3 &&
-                Tools().isValidEmail(binding.edRegisterEmail.getText()) &&
-                binding.edRegisterPassword.getText().length >= 6
-        binding.pbRegister.enable = isButtonEnable
+        with(binding){
+            val isButtonEnable = edRegisterName.getText().length >= 3 &&
+                    Tools().isValidEmail(edRegisterEmail.getText()) &&
+                    edRegisterPassword.getText().length >= 6
+            pbRegister.enable = isButtonEnable
+        }
     }
 }
