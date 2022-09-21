@@ -1,6 +1,7 @@
 package dev.studiocloud.storyapp.ui.activities.detail
 
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -27,31 +28,38 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val extras = intent.extras
-        val storyItem = extras?.getParcelable<StoryItem>(Constant.STORY_DATA)
-
-        binding.ibBack.setOnClickListener {
-            onBackPressed()
+        val storyItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            extras?.getParcelable(Constant.STORY_DATA, StoryItem::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            extras?.getParcelable(Constant.STORY_DATA)
         }
 
-        if (storyItem != null){
-            binding.tvDetailName.text = storyItem.name
-            binding.tvDetailDescription.text = storyItem.description
+        with(binding){
+            ibBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-            Glide.with(this)
-                .applyDefaultRequestOptions(avatarRequestOption)
-                .load(storyItem.photoUrl)
-                .into(binding.ivUserAvatar)
+            if (storyItem != null){
+                tvDetailName.text = storyItem.name
+                tvDetailDescription.text = storyItem.description
 
-            Glide.with(this)
-                .applyDefaultRequestOptions(
-                    RequestOptions()
-                        .placeholder(R.drawable.placeholder)
-                        .centerCrop()
-                        .override(500,500)
-                )
-                .load(storyItem.photoUrl)
-                .listener(glideListener())
-                .into(binding.ivDetailPhoto)
+                Glide.with(this@DetailActivity)
+                    .applyDefaultRequestOptions(avatarRequestOption)
+                    .load(storyItem.photoUrl)
+                    .into(ivUserAvatar)
+
+                Glide.with(this@DetailActivity)
+                    .applyDefaultRequestOptions(
+                        RequestOptions()
+                            .placeholder(R.drawable.placeholder)
+                            .centerCrop()
+                            .override(500,500)
+                    )
+                    .load(storyItem.photoUrl)
+                    .listener(glideListener())
+                    .into(ivDetailPhoto)
+            }
         }
     }
 

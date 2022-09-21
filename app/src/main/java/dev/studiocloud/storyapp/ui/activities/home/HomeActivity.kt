@@ -32,7 +32,12 @@ class HomeActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            storyViewModel?.getStory(true)
+            storyViewModel?.getStory(
+                true,
+                onFinish = {
+                    binding.rvStoryList.smoothScrollToPosition(0)
+                }
+            )
         }
     }
 
