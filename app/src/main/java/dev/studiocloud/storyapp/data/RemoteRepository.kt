@@ -29,11 +29,8 @@ open class RemoteRepository {
     companion object{
         private var INSTANCE: RemoteRepository? = null
 
-        fun getInstance(): RemoteRepository? {
-            if (INSTANCE == null) {
-                INSTANCE = RemoteRepository()
-            }
-            return INSTANCE
+        fun getInstance(): RemoteRepository {
+            return INSTANCE ?: synchronized(this){ RemoteRepository() }
         }
     }
 

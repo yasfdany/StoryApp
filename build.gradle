@@ -9,6 +9,10 @@ ext {
     retrofitVersion = "2.9.0"
     loggingInterceptorVersion="4.10.0"
     coroutinesVersion="1.6.1"
+    room="2.5.0-alpha03"
+    coreTesting="2.1.0"
+    mockito="4.4.0"
+    navigation="2.5.2"
 }
 
 task clean(type: Delete) {

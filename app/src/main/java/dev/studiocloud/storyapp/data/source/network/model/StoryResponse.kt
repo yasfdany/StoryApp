@@ -1,6 +1,8 @@
 package dev.studiocloud.storyapp.data.source.network.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -17,8 +19,12 @@ data class StoryResponse(
 	val message: String? = null
 ) : Parcelable
 
+@Entity(tableName = "story")
 @Parcelize
 data class StoryItem(
+	@PrimaryKey
+	@field:SerializedName("id")
+	val id: String,
 
 	@field:SerializedName("photoUrl")
 	val photoUrl: String? = null,
@@ -34,9 +40,6 @@ data class StoryItem(
 
 	@field:SerializedName("lon")
 	val lon: Double? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null,
 
 	@field:SerializedName("lat")
 	val lat: Double? = null

@@ -7,7 +7,7 @@ class Injection {
     companion object{
         fun provideRepository(): MainRepository? {
             val remoteRepository = RemoteRepository.getInstance()
-            return MainRepository.getInstance(remoteRepository!!)
+            return MainRepository.getInstance(remoteRepository)
         }
     }
 }
