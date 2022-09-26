@@ -13,11 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.databinding.ActivityHomeBinding
+import dev.studiocloud.storyapp.ui.activities.home.adapters.LoadingStateAdapter
 import dev.studiocloud.storyapp.ui.activities.home.adapters.StoryListAdapter
 import dev.studiocloud.storyapp.ui.activities.login.LoginActivity
 import dev.studiocloud.storyapp.ui.activities.upload.UploadActivity
@@ -32,18 +33,59 @@ class HomeActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            storyViewModel?.getStory(
-                true,
-                onFinish = {
-                    binding.rvStoryList.smoothScrollToPosition(0)
-                }
-            )
+            getData()
+            binding.rvStoryList.smoothScrollToPosition(0)
         }
     }
 
     private fun obtainStoryViewModel(): StoryViewModel {
-        viewModelFactory = ViewModelFactory.getInstance()
+        viewModelFactory = ViewModelFactory.getInstance(this)
         return ViewModelProvider(this, viewModelFactory)[StoryViewModel::class.java]
+    }
+
+    private fun getData() {
+        with(binding){
+            val scaleX = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_X, 0f)
+            val scaleY = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_Y, 0f)
+            val scaleReverseX = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_X, 1f)
+            val scaleReverseY = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_Y, 1f)
+            storyListAdapter = StoryListAdapter(this@HomeActivity)
+
+            val scaleSet = AnimatorSet()
+            val scaleReverseSet = AnimatorSet()
+
+            scaleSet.playTogether(scaleX,scaleY)
+            scaleReverseSet.playTogether(scaleReverseX, scaleReverseY)
+
+            storyListAdapter?.addLoadStateListener {
+                when(it.source.refresh){
+                    is LoadState.NotLoading -> {
+                        srStoryRefresher.isRefreshing = false
+                    }
+                    LoadState.Loading -> {}
+                    is LoadState.Error -> {}
+                }
+                when(it.source.append){
+                    is LoadState.NotLoading -> {
+                        scaleReverseSet.start()
+                        animateLoadMoreLoading(false)
+                    }
+                    LoadState.Loading -> {
+                        scaleSet.start()
+                        animateLoadMoreLoading(true)
+                    }
+                    is LoadState.Error -> {}
+                }
+            }
+            rvStoryList.adapter = storyListAdapter?.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    storyListAdapter?.retry()
+                }
+            )
+            storyViewModel?.stories?.observe(this@HomeActivity) {
+                storyListAdapter?.submitData(lifecycle, it)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,19 +94,13 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         storyViewModel = obtainStoryViewModel()
-        storyViewModel?.getStory(true)
         setupStoryListView()
-
-        storyViewModel?.stories?.observe(this){
-            storyListAdapter?.updateStoryListItems(it)
-        }
+        getData()
 
         with(binding){
             ibLogout.setOnClickListener { doLogout() }
             srStoryRefresher.setOnRefreshListener {
-                storyViewModel?.getStory(true, onFinish = {
-                    srStoryRefresher.isRefreshing = false
-                })
+                storyListAdapter?.refresh()
             }
 
             buttonAdd.setOnClickListener {
@@ -97,44 +133,14 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupStoryListView() {
         with(binding){
-            val linearLayout = LinearLayoutManager(this@HomeActivity)
-            val scaleX = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_X, 0f)
-            val scaleY = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_Y, 0f)
-            val scaleReverseX = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_X, 1f)
-            val scaleReverseY = ObjectAnimator.ofFloat(buttonAdd, View.SCALE_Y, 1f)
 
-            val scaleSet = AnimatorSet()
-            val scaleReverseSet = AnimatorSet()
-
-            scaleSet.playTogether(scaleX,scaleY)
-            scaleReverseSet.playTogether(scaleReverseX, scaleReverseY)
-
-            storyListAdapter = StoryListAdapter(this@HomeActivity, storyViewModel?.stories?.value ?: mutableListOf())
-            rvStoryList.adapter = storyListAdapter
+            val layoutManager = LinearLayoutManager(this@HomeActivity)
+            rvStoryList.layoutManager = layoutManager
 
             tvInitialName.text = prefs?.user?.name?.substring(0, 1)
             tvName.text = prefs?.user?.name
 
             viLoadingMore.translationY = 500f
-
-            rvStoryList.layoutManager = linearLayout
-            rvStoryList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (linearLayout.findLastCompletelyVisibleItemPosition() == (storyViewModel?.stories?.value?.size
-                            ?: 0) - 1
-                    ) {
-                        scaleSet.start()
-                        animateLoadMoreLoading(true)
-
-                        storyViewModel?.getStory(onFinish = {
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                scaleReverseSet.start()
-                                animateLoadMoreLoading(false)
-                            }, 500)
-                        })
-                    }
-                }
-            })
         }
     }
 

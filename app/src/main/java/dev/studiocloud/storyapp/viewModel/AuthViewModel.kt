@@ -2,10 +2,10 @@ package dev.studiocloud.storyapp.viewModel
 
 import androidx.lifecycle.ViewModel
 import dev.studiocloud.storyapp.App.Companion.prefs
+import dev.studiocloud.storyapp.data.repository.MainRepository
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResult
-import dev.studiocloud.storyapp.data.MainRepository
 
 class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
     var user: LoginResult? = null

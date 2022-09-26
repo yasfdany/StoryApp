@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
     private var authViewModel: AuthViewModel? = null
 
     private fun obtainAuthViewModel(): AuthViewModel{
-        viewModelFactory = ViewModelFactory.getInstance()
+        viewModelFactory = ViewModelFactory.getInstance(this)
         return ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
     }
 

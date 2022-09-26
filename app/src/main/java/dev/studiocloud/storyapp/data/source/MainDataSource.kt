@@ -1,10 +1,11 @@
-package dev.studiocloud.storyapp.data
+package dev.studiocloud.storyapp.data.source
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
-import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
+import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 
 interface MainDataSource {
     fun doLogin(
@@ -22,16 +23,12 @@ interface MainDataSource {
         onFailed: ((message: String?) -> Unit)? = null,
     ): LiveData<DefaultResponse?>
 
-    fun getStory(
-        page: Int,
-        onSuccess: (response: StoryResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ): LiveData<StoryResponse?>
-
     fun postNewStory(
         photo: Uri?,
         description: String,
         onSuccess: (response: DefaultResponse?) -> Unit,
         onFailed: ((message: String?) -> Unit)? = null,
     ): LiveData<DefaultResponse?>
+
+    fun getStory(): LiveData<PagingData<StoryItem>>
 }

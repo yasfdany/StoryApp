@@ -1,11 +1,13 @@
-package dev.studiocloud.storyapp.data
+package dev.studiocloud.storyapp.data.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagingData
+import dev.studiocloud.storyapp.data.source.MainDataSource
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
-import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
+import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 
 class MainRepository(
     private val remoteRepository: RemoteRepository,
@@ -17,7 +19,7 @@ class MainRepository(
             remoteRepository: RemoteRepository,
         ): MainRepository? {
             if (INSTANCE == null) {
-                synchronized(RemoteRepository::class.java) {
+                synchronized(this) {
                     if (INSTANCE == null) {
                         INSTANCE = MainRepository(
                             remoteRepository,
@@ -60,29 +62,10 @@ class MainRepository(
     ): LiveData<DefaultResponse?> {
         val response: MutableLiveData<DefaultResponse?> = MutableLiveData()
 
-        remoteRepository.doRegister(name, email, password, object: RemoteRepository.DefaultCallback {
+        remoteRepository.doRegister(name, email, password, object:
+            RemoteRepository.DefaultCallback {
             override fun onDataReceived(defaultResponse: DefaultResponse?) {
                 onSuccess(defaultResponse)
-            }
-
-            override fun onDataNotAvailable(message: String?) {
-                onFailed?.invoke(message)
-            }
-        })
-
-        return response
-    }
-
-    override fun getStory(
-        page: Int,
-        onSuccess: (response: StoryResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)?
-    ): LiveData<StoryResponse?> {
-        val response: MutableLiveData<StoryResponse?> = MutableLiveData()
-
-        remoteRepository.getStory(page, object : RemoteRepository.StoryCallback{
-            override fun onDataReceived(storyResponse: StoryResponse?) {
-                onSuccess(storyResponse)
             }
 
             override fun onDataNotAvailable(message: String?) {
@@ -104,7 +87,7 @@ class MainRepository(
         remoteRepository.postNewStory(
             photo,
             description,
-            object : RemoteRepository.DefaultCallback{
+            object : RemoteRepository.DefaultCallback {
                 override fun onDataReceived(defaultResponse: DefaultResponse?) {
                     onSuccess(defaultResponse)
                 }
@@ -116,5 +99,9 @@ class MainRepository(
         )
 
         return response
+    }
+
+    override fun getStory(): LiveData<PagingData<StoryItem>> {
+        return remoteRepository.getStory()
     }
 }

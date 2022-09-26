@@ -4,15 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import dev.studiocloud.storyapp.data.source.local.entity.RemoteKeys
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 
 @Database(
-    entities = [StoryItem::class],
+    entities = [StoryItem::class, RemoteKeys::class],
     version = 1,
     exportSchema = false
 )
 abstract class StoryDatabase: RoomDatabase() {
     abstract fun storyDao(): StoryDao
+    abstract fun remoteKeysDao(): RemoteKeysDao
 
     companion object {
         @Volatile

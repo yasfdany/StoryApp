@@ -6,15 +6,16 @@ import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
     @GET("stories")
-    fun getAllStories(
+    suspend fun getAllStories(
         @Header("Authorization") Authorization: String,
         @Query("page") page: Int,
         @Query("size") size: Int,
-    ): Call<StoryResponse>?
+    ): Response<StoryResponse>
 
     @FormUrlEncoded
     @POST("register")

@@ -43,7 +43,7 @@ class UploadActivity : AppCompatActivity() {
         }
 
     private fun obtainStoryViewModel(): StoryViewModel {
-        viewModelFactory = ViewModelFactory.getInstance()
+        viewModelFactory = ViewModelFactory.getInstance(this)
         return ViewModelProvider(this, viewModelFactory)[StoryViewModel::class.java]
     }
 

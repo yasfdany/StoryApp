@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,9 +30,19 @@ import dev.studiocloud.storyapp.utils.Constant
 
 class StoryListAdapter(
     private val context: Context,
-    data: MutableList<StoryItem>
-): RecyclerView.Adapter<StoryListAdapter.Holder>() {
-    private val storyData = mutableListOf<StoryItem>()
+): PagingDataAdapter<StoryItem, StoryListAdapter.Holder>(DIFF_CALLBACK) {
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StoryItem>() {
+            override fun areItemsTheSame(oldItem: StoryItem, newItem: StoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: StoryItem, newItem: StoryItem): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
+
     private var lastPosition = -1
     private val avatarRequestOption = RequestOptions()
         .override(56,56)
@@ -41,10 +52,6 @@ class StoryListAdapter(
         .override(500,500)
         .centerCrop()
 
-    init {
-        storyData.addAll(data)
-    }
-
     inner class Holder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -53,21 +60,23 @@ class StoryListAdapter(
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        val data = getItem(position)
+
         with(holder){
-            with(storyData[position]){
+            with(data){
                 Glide.with(context)
                     .applyDefaultRequestOptions(avatarRequestOption)
-                    .load(this.photoUrl)
+                    .load(this?.photoUrl)
                     .into(binding.ivUserAvatar)
 
                 Glide.with(context)
                     .applyDefaultRequestOptions(storyImageRequestOption)
-                    .load(this.photoUrl)
+                    .load(this?.photoUrl)
                     .listener(glideListener(binding))
                     .into(binding.ivItemPhoto)
 
-                binding.tvItemName.text = this.name
-                binding.tvCaption.text = this.description
+                binding.tvItemName.text = this?.name
+                binding.tvCaption.text = this?.description
 
                 binding.ivItemPhoto.setOnClickListener {
                     val optionsCompat: ActivityOptionsCompat =
@@ -84,19 +93,6 @@ class StoryListAdapter(
         }
 
         animateItem(holder.itemView, position)
-    }
-
-    override fun getItemCount(): Int {
-        return storyData.size
-    }
-
-    fun updateStoryListItems(story: List<StoryItem>){
-        val diffCallback = StoryDiffCallback(storyData, story)
-        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
-
-        storyData.clear()
-        storyData.addAll(story)
-        diffResult.dispatchUpdatesTo(this)
     }
 
     private fun glideListener(

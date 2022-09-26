@@ -1,14 +1,17 @@
-package dev.studiocloud.storyapp.data
+package dev.studiocloud.storyapp.data.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.*
 import com.google.gson.Gson
 import dev.studiocloud.storyapp.App.Companion.prefs
-import dev.studiocloud.storyapp.data.source.network.ApiClient
+import dev.studiocloud.storyapp.data.mediator.StoryRemoteMediator
+import dev.studiocloud.storyapp.data.source.local.StoryDatabase
 import dev.studiocloud.storyapp.data.source.network.ApiService
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
+import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -21,21 +24,40 @@ import retrofit2.Response
 import java.io.File
 import java.io.Reader
 
-
-open class RemoteRepository {
-    private val apiClient: ApiService? = ApiClient().get()
+open class RemoteRepository(
+    private val storyDatabase: StoryDatabase,
+    private val apiService: ApiService?
+) {
     private val gson: Gson = Gson()
 
     companion object{
         private var INSTANCE: RemoteRepository? = null
 
-        fun getInstance(): RemoteRepository {
-            return INSTANCE ?: synchronized(this){ RemoteRepository() }
+        fun getInstance(
+            storyDatabase: StoryDatabase,
+            apiService: ApiService?
+        ): RemoteRepository {
+            return INSTANCE ?: synchronized(this){
+                RemoteRepository(storyDatabase, apiService)
+            }
         }
     }
 
     fun errorBodyToResponse(data: Reader?): DefaultResponse? {
         return gson.fromJson(data, DefaultResponse::class.java)
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    open fun getStory(): LiveData<PagingData<StoryItem>>{
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10
+            ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService),
+            pagingSourceFactory = {
+                storyDatabase.storyDao().getAllStory()
+            }
+        ).liveData
     }
 
     open fun doLogin(
@@ -63,7 +85,7 @@ open class RemoteRepository {
             }
         }
 
-        apiClient?.doLogin(
+        apiService?.doLogin(
             email,
             password,
         )?.enqueue(listener)
@@ -97,44 +119,10 @@ open class RemoteRepository {
             }
         }
 
-        apiClient?.doRegister(
+        apiService?.doRegister(
             name,
             email,
             password,
-        )?.enqueue(listener)
-
-        return data
-    }
-
-    open fun getStory(
-        page: Int,
-        callback: StoryCallback?
-    ): LiveData<StoryResponse?>{
-        val token = prefs?.user?.token
-        val data: MutableLiveData<StoryResponse?> = MutableLiveData()
-        val listener = object: Callback<StoryResponse?> {
-            override fun onResponse(
-                call: Call<StoryResponse?>,
-                response: Response<StoryResponse?>
-            ) {
-                if(response.isSuccessful){
-                    data.value = response.body()
-                    callback?.onDataReceived(response.body())
-                } else {
-                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
-                    callback?.onDataNotAvailable(errorResponse?.message)
-                }
-            }
-
-            override fun onFailure(call: Call<StoryResponse?>, t: Throwable) {
-                callback?.onDataNotAvailable(t.message)
-            }
-        }
-
-        apiClient?.getAllStories(
-            Authorization = "Bearer $token",
-            page,
-            size = 10,
         )?.enqueue(listener)
 
         return data
@@ -173,7 +161,7 @@ open class RemoteRepository {
             val descriptionBody: RequestBody =
                 description.toRequestBody("text/plain".toMediaTypeOrNull())
 
-            apiClient?.postNewStory(
+            apiService?.postNewStory(
                 Authorization = "Bearer $token",
                 description = descriptionBody,
                 photo = body,
