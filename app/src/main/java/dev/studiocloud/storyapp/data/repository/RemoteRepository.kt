@@ -12,7 +12,6 @@ import dev.studiocloud.storyapp.data.source.network.ApiService
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
-import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -178,11 +177,6 @@ open class RemoteRepository(
 
     interface LoginCallback {
         fun onDataReceived(loginResponse: LoginResponse?)
-        fun onDataNotAvailable(message: String?)
-    }
-
-    interface StoryCallback {
-        fun onDataReceived(storyResponse: StoryResponse?)
         fun onDataNotAvailable(message: String?)
     }
 }

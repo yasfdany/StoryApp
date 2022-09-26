@@ -33,8 +33,8 @@ class HomeActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            getData()
-            binding.rvStoryList.smoothScrollToPosition(0)
+            binding.srStoryRefresher.isRefreshing = true
+            storyListAdapter?.refresh()
         }
     }
 
