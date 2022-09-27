@@ -33,8 +33,11 @@ class HomeActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            binding.srStoryRefresher.isRefreshing = true
             storyListAdapter?.refresh()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.rvStoryList.scrollToPosition(0)
+            }, 1000)
         }
     }
 
@@ -107,6 +110,9 @@ class HomeActivity : AppCompatActivity() {
                 resultLauncher.launch(Intent(this@HomeActivity, UploadActivity::class.java))
             }
 
+            tvInitialName.setOnClickListener {
+                rvStoryList.smoothScrollToPosition(0)
+            }
         }
     }
 

@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.databinding.ActivityUploadBinding
+import dev.studiocloud.storyapp.ui.components.OnTextChange
 import dev.studiocloud.storyapp.utils.ManagePermissions
 import dev.studiocloud.storyapp.utils.Tools
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
@@ -39,6 +40,7 @@ class UploadActivity : AppCompatActivity() {
                 val fileUri = data?.data!!
                 selectedImage = fileUri
                 binding.ivSelectedImage.setImageURI(fileUri)
+                binding.buttonAdd.enable = binding.edAddDescription.getText().isNotEmpty() && selectedImage != null
             }
         }
 
@@ -99,6 +101,12 @@ class UploadActivity : AppCompatActivity() {
 
     private fun setupViews() {
         with(binding){
+            buttonAdd.enable = false
+            edAddDescription.addOnTextChange(object: OnTextChange{
+                override fun onChange(text: String) {
+                    buttonAdd.enable = text.isNotEmpty() && selectedImage != null
+                }
+            })
             ibBack.setOnClickListener { finish() }
             llPickPhoto.setOnClickListener { pickImage() }
             buttonAdd.setOnClickListener { postStory() }
