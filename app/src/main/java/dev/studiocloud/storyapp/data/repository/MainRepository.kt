@@ -8,6 +8,7 @@ import dev.studiocloud.storyapp.data.source.MainDataSource
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
+import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 
 class MainRepository(
     private val remoteRepository: RemoteRepository,
@@ -103,5 +104,25 @@ class MainRepository(
 
     override fun getStory(): LiveData<PagingData<StoryItem>> {
         return remoteRepository.getStory()
+    }
+
+    override fun getStoryLocations(
+        onSuccess: (data: List<StoryItem>?) -> Unit,
+        onFailed: ((message: String?) -> Unit)?
+    ): LiveData<List<StoryItem>?> {
+        val data = MutableLiveData<List<StoryItem>?>()
+
+        remoteRepository.getStoryLocations(object: RemoteRepository.StoryCallback{
+            override fun onDataReceived(storyResponse: StoryResponse?) {
+                data.value = storyResponse?.listStory
+                onSuccess(data.value)
+            }
+
+            override fun onDataNotAvailable(message: String?) {
+                onFailed?.invoke(message)
+            }
+        })
+
+        return data
     }
 }

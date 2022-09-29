@@ -12,6 +12,7 @@ import dev.studiocloud.storyapp.data.source.network.ApiService
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
+import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -170,6 +171,29 @@ open class RemoteRepository(
         return data
     }
 
+    open fun getStoryLocations(callback: StoryCallback?): LiveData<List<StoryItem>?>{
+        val token = prefs?.user?.token
+        val data = MutableLiveData<List<StoryItem>?>()
+        val listener = object: Callback<StoryResponse?>{
+            override fun onResponse(call: Call<StoryResponse?>, response: Response<StoryResponse?>) {
+                if (response.isSuccessful){
+                    callback?.onDataReceived(response.body())
+                    data.value = response.body()?.listStory
+                } else {
+                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
+                    callback?.onDataNotAvailable(errorResponse?.message)
+                }
+            }
+
+            override fun onFailure(call: Call<StoryResponse?>, t: Throwable) {
+                callback?.onDataNotAvailable(t.message)
+            }
+        }
+
+        apiService?.getStoryLocations("Bearer $token")?.enqueue(listener)
+        return data
+    }
+
     interface DefaultCallback {
         fun onDataReceived(defaultResponse: DefaultResponse?)
         fun onDataNotAvailable(message: String?)
@@ -177,6 +201,11 @@ open class RemoteRepository(
 
     interface LoginCallback {
         fun onDataReceived(loginResponse: LoginResponse?)
+        fun onDataNotAvailable(message: String?)
+    }
+
+    interface StoryCallback {
+        fun onDataReceived(storyResponse: StoryResponse?)
         fun onDataNotAvailable(message: String?)
     }
 }

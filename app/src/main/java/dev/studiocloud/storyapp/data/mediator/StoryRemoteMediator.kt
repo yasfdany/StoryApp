@@ -85,12 +85,4 @@ class StoryRemoteMediator(
             database.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
-
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, StoryItem>): RemoteKeys? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
-                database.remoteKeysDao().getRemoteKeysId(id)
-            }
-        }
-    }
 }

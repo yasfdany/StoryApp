@@ -31,4 +31,9 @@ interface MainDataSource {
     ): LiveData<DefaultResponse?>
 
     fun getStory(): LiveData<PagingData<StoryItem>>
+
+    fun getStoryLocations(
+        onSuccess: (response: List<StoryItem>?) -> Unit,
+        onFailed: ((message: String?) -> Unit)? = null,
+    ): LiveData<List<StoryItem>?>
 }

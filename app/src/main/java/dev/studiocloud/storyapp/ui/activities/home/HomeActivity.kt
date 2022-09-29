@@ -21,6 +21,7 @@ import dev.studiocloud.storyapp.databinding.ActivityHomeBinding
 import dev.studiocloud.storyapp.ui.activities.home.adapters.LoadingStateAdapter
 import dev.studiocloud.storyapp.ui.activities.home.adapters.StoryListAdapter
 import dev.studiocloud.storyapp.ui.activities.login.LoginActivity
+import dev.studiocloud.storyapp.ui.activities.maps_story.MapStoryActivity
 import dev.studiocloud.storyapp.ui.activities.upload.UploadActivity
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
 import dev.studiocloud.storyapp.viewModel.ViewModelFactory
@@ -44,6 +45,32 @@ class HomeActivity : AppCompatActivity() {
     private fun obtainStoryViewModel(): StoryViewModel {
         viewModelFactory = ViewModelFactory.getInstance(this)
         return ViewModelProvider(this, viewModelFactory)[StoryViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        storyViewModel = obtainStoryViewModel()
+        setupStoryListView()
+        getData()
+
+        with(binding){
+            ibMaps.setOnClickListener { startActivity(Intent(this@HomeActivity, MapStoryActivity::class.java)) }
+            ibLogout.setOnClickListener { doLogout() }
+            srStoryRefresher.setOnRefreshListener {
+                storyListAdapter?.refresh()
+            }
+
+            buttonAdd.setOnClickListener {
+                resultLauncher.launch(Intent(this@HomeActivity, UploadActivity::class.java))
+            }
+
+            tvInitialName.setOnClickListener {
+                rvStoryList.smoothScrollToPosition(0)
+            }
+        }
     }
 
     private fun getData() {
@@ -87,31 +114,6 @@ class HomeActivity : AppCompatActivity() {
             )
             storyViewModel?.stories?.observe(this@HomeActivity) {
                 storyListAdapter?.submitData(lifecycle, it)
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        storyViewModel = obtainStoryViewModel()
-        setupStoryListView()
-        getData()
-
-        with(binding){
-            ibLogout.setOnClickListener { doLogout() }
-            srStoryRefresher.setOnRefreshListener {
-                storyListAdapter?.refresh()
-            }
-
-            buttonAdd.setOnClickListener {
-                resultLauncher.launch(Intent(this@HomeActivity, UploadActivity::class.java))
-            }
-
-            tvInitialName.setOnClickListener {
-                rvStoryList.smoothScrollToPosition(0)
             }
         }
     }
