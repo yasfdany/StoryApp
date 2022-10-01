@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dev.studiocloud.storyapp.R
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.databinding.ActivityRegisterBinding
 import dev.studiocloud.storyapp.ui.components.OnTextChange
 import dev.studiocloud.storyapp.utils.Tools
@@ -48,25 +49,30 @@ class RegisterActivity : AppCompatActivity(), OnTextChange {
 
         val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
         progressDialog.setMessage(getString(R.string.loading))
-        progressDialog.show()
 
         with(binding){
             authViewModel?.doRegister(
                 edRegisterName.getText(),
                 edRegisterEmail.getText(),
                 edRegisterPassword.getText(),
-                onSuccess = {
-                    progressDialog.dismiss()
-                    Toast.makeText(this@RegisterActivity, it?.message ?: "", Toast.LENGTH_SHORT).show()
-                    finish()
-                },
-                onFailed = {
-                    progressDialog.dismiss()
-                    val snackBar =
-                        Snackbar.make(clRegisterPage, it ?: "tst", Snackbar.LENGTH_SHORT)
-                    snackBar.show()
+            )?.observe(this@RegisterActivity) { result ->
+                when(result){
+                    is ResultData.Error -> {
+                        progressDialog.dismiss()
+                        val snackBar =
+                            Snackbar.make(clRegisterPage, result.error, Snackbar.LENGTH_SHORT)
+                        snackBar.show()
+                    }
+                    is ResultData.Loading -> {
+                        progressDialog.show()
+                    }
+                    is ResultData.Success -> {
+                        progressDialog.dismiss()
+                        Toast.makeText(this@RegisterActivity, result.data?.message ?: "", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
                 }
-            )
+            }
         }
     }
 

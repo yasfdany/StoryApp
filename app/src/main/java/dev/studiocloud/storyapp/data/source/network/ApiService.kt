@@ -24,11 +24,11 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("register")
-    fun doRegister(
+    suspend fun doRegister(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String,
-    ): Call<DefaultResponse?>?
+    ): Response<DefaultResponse>
 
     @FormUrlEncoded
     @POST("login")

@@ -38,31 +38,13 @@ class MainRepository(
     override fun doLogin(
         email: String,
         password: String,
-    ): LiveData<ResultData<LoginResponse?>> = remoteRepository.doLogin(email, password);
+    ): LiveData<ResultData<LoginResponse?>> = remoteRepository.doLogin(email, password)
 
     override fun doRegister(
         name: String,
         email: String,
         password: String,
-        onSuccess: (response: DefaultResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)?
-    ): LiveData<DefaultResponse?> {
-        val response: MutableLiveData<DefaultResponse?> = MutableLiveData()
-
-        remoteRepository.doRegister(name, email, password, object:
-            RemoteRepository.DefaultCallback {
-            override fun onDataReceived(defaultResponse: DefaultResponse?) {
-                response.value = defaultResponse
-                onSuccess(defaultResponse)
-            }
-
-            override fun onDataNotAvailable(message: String?) {
-                onFailed?.invoke(message)
-            }
-        })
-
-        return response
-    }
+    ): LiveData<ResultData<DefaultResponse?>> = remoteRepository.doRegister(name, email, password)
 
     override fun postNewStory(
         photo: Uri?,

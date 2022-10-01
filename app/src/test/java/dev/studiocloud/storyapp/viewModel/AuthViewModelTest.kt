@@ -5,6 +5,7 @@ import androidx.lifecycle.liveData
 import dev.studiocloud.storyapp.MainDispatcherRule
 import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.data.repository.MainRepository
+import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.getOrAwaitValue
 import dev.studiocloud.storyapp.utils.DataDummy
@@ -31,8 +32,9 @@ internal class AuthViewModelTest{
     @Mock
     private lateinit var mainRepository: MainRepository
     private lateinit var authViewModel: AuthViewModel
-    private val dummyLoginSuccess = DataDummy.loginSuccess
-    private val dummyLoginError = DataDummy.errorResponse
+    private val dummyLoginSuccess = DataDummy.loginSuccessResponse
+    private val dummyLoginError = DataDummy.failedLoginResponse
+    private val dummyRegisterSuccess = DataDummy.registerSuccessResponse
 
     @Before
     fun setup(){
@@ -82,8 +84,34 @@ internal class AuthViewModelTest{
             "testcase@gmail.com",
             "wrongpassword",
         )
-        Assert.assertNotNull(actualResponse)
-        Assert.assertTrue(actualResponse is ResultData.Error)
         Assert.assertEquals(dummyLoginError.message, (actualResponse as ResultData.Error).error)
+    }
+
+    @Test
+    fun `when register response success and should not null`(){
+        val expectedResponse = liveData<ResultData<DefaultResponse?>> {
+            emit(ResultData.Success(dummyRegisterSuccess))
+        }
+        val randomEmail = "test_${System.currentTimeMillis()}@gmail.com"
+        `when`(mainRepository.doRegister(
+            "Dany",
+            randomEmail,
+            "qwer1234",
+        )).thenReturn(expectedResponse)
+
+        val actualResponse = authViewModel.doRegister(
+            "Dany",
+            randomEmail,
+            "qwer1234",
+        )?.getOrAwaitValue()
+
+        Mockito.verify(mainRepository).doRegister(
+            "Dany",
+            randomEmail,
+            "qwer1234",
+        )
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is ResultData.Success)
+        Assert.assertEquals(dummyRegisterSuccess.message, (actualResponse as ResultData.Success).data?.message)
     }
 }

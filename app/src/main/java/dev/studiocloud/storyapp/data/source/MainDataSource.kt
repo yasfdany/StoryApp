@@ -19,9 +19,7 @@ interface MainDataSource {
         name: String,
         email: String,
         password: String,
-        onSuccess: (response: DefaultResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ): LiveData<DefaultResponse?>
+    ): LiveData<ResultData<DefaultResponse?>>
 
     fun postNewStory(
         photo: Uri?,

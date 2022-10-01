@@ -89,8 +89,26 @@ open class RemoteRepository(
         name: String,
         email: String,
         password: String,
-        callback: DefaultCallback?,
-    ): LiveData<DefaultResponse?> {
+    ): LiveData<ResultData<DefaultResponse?>> = liveData {
+        emit(ResultData.Loading)
+        try {
+            val response = apiService?.doRegister(
+                name,
+                email,
+                password,
+            )
+            if (response?.isSuccessful == true){
+                emit(ResultData.Success(response.body()))
+            } else {
+                val errorResponse: DefaultResponse? = errorBodyToResponse(response?.errorBody()?.charStream())
+                emit(ResultData.Error(errorResponse?.message.toString()))
+            }
+        } catch (e: Exception){
+            emit(ResultData.Error(e.message.toString()))
+        }
+    }
+
+            /*LiveData<DefaultResponse?> {
         val data: MutableLiveData<DefaultResponse?> = MutableLiveData()
         val listener = object: Callback<DefaultResponse?> {
             override fun onResponse(
@@ -118,7 +136,7 @@ open class RemoteRepository(
         )?.enqueue(listener)
 
         return data
-    }
+    }*/
 
     open fun postNewStory(
         photo: Uri?,
