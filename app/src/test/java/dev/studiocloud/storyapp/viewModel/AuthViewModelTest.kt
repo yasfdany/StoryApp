@@ -35,6 +35,7 @@ internal class AuthViewModelTest{
     private val dummyLoginSuccess = DataDummy.loginSuccessResponse
     private val dummyLoginError = DataDummy.failedLoginResponse
     private val dummyRegisterSuccess = DataDummy.registerSuccessResponse
+    private val dummyEmailAlreadyRegistered = DataDummy.emailAlreadyRegisteredResponse
 
     @Before
     fun setup(){
@@ -113,5 +114,32 @@ internal class AuthViewModelTest{
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is ResultData.Success)
         Assert.assertEquals(dummyRegisterSuccess.message, (actualResponse as ResultData.Success).data?.message)
+    }
+
+    @Test
+    fun `when email already registered`(){
+        val expectedResponse = liveData<ResultData<DefaultResponse?>> {
+            emit(ResultData.Error(dummyEmailAlreadyRegistered.message.toString()))
+        }
+        `when`(mainRepository.doRegister(
+            "Dany",
+            "testcase@gmail.com",
+            "qwer1234",
+        )).thenReturn(expectedResponse)
+
+        val actualResponse = authViewModel.doRegister(
+            "Dany",
+            "testcase@gmail.com",
+            "qwer1234",
+        )?.getOrAwaitValue()
+
+        Mockito.verify(mainRepository).doRegister(
+            "Dany",
+            "testcase@gmail.com",
+            "qwer1234",
+        )
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is ResultData.Error)
+        Assert.assertEquals(dummyEmailAlreadyRegistered.message, (actualResponse as ResultData.Error).error)
     }
 }
