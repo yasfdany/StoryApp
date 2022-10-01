@@ -174,29 +174,6 @@ open class RemoteRepository(
         }
     }
 
-/*    {
-        val token = prefs?.user?.token
-        val data = MutableLiveData<List<StoryItem>?>()
-        val listener = object: Callback<StoryResponse?>{
-            override fun onResponse(call: Call<StoryResponse?>, response: Response<StoryResponse?>) {
-                if (response.isSuccessful){
-                    callback?.onDataReceived(response.body())
-                    data.value = response.body()?.listStory
-                } else {
-                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
-                    callback?.onDataNotAvailable(errorResponse?.message)
-                }
-            }
-
-            override fun onFailure(call: Call<StoryResponse?>, t: Throwable) {
-                callback?.onDataNotAvailable(t.message)
-            }
-        }
-
-        apiService?.getStoryLocations("Bearer $token")?.enqueue(listener)
-        return data
-    }*/
-
     interface DefaultCallback {
         fun onDataReceived(defaultResponse: DefaultResponse?)
         fun onDataNotAvailable(message: String?)
