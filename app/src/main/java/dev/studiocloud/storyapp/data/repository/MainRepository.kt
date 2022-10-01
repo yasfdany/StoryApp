@@ -2,7 +2,6 @@ package dev.studiocloud.storyapp.data.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import com.google.android.gms.maps.model.LatLng
 import dev.studiocloud.storyapp.data.ResultData
@@ -49,29 +48,11 @@ class MainRepository(
         photo: Uri?,
         description: String,
         latLng: LatLng,
-        onSuccess: (response: DefaultResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)?
-    ): LiveData<DefaultResponse?> {
-        val response: MutableLiveData<DefaultResponse?> = MutableLiveData()
-
-        remoteRepository.postNewStory(
-            photo,
-            description,
-            latLng,
-            object : RemoteRepository.DefaultCallback {
-                override fun onDataReceived(defaultResponse: DefaultResponse?) {
-                    response.value = defaultResponse
-                    onSuccess(defaultResponse)
-                }
-
-                override fun onDataNotAvailable(message: String?) {
-                    onFailed?.invoke(message)
-                }
-            }
-        )
-
-        return response
-    }
+    ): LiveData<ResultData<DefaultResponse?>> = remoteRepository.postNewStory(
+        photo,
+        description,
+        latLng,
+    )
 
     override fun getStory(): LiveData<PagingData<StoryItem>> {
         return remoteRepository.getStory()

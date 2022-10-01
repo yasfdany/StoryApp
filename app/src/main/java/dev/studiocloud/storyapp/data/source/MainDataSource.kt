@@ -25,9 +25,7 @@ interface MainDataSource {
         photo: Uri?,
         description: String,
         latLng: LatLng,
-        onSuccess: (response: DefaultResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ): LiveData<DefaultResponse?>
+    ): LiveData<ResultData<DefaultResponse?>>
 
     fun getStory(): LiveData<PagingData<StoryItem>>
 

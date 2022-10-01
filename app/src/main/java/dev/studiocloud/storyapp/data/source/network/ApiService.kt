@@ -5,7 +5,6 @@ import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -39,11 +38,11 @@ interface ApiService {
 
     @Multipart
     @POST("stories")
-    fun postNewStory(
+    suspend fun postNewStory(
         @Header("Authorization") Authorization: String,
         @Part("description") description: RequestBody,
         @Part("lat") lat: RequestBody,
         @Part("lon") lon: RequestBody,
         @Part photo: MultipartBody.Part
-    ): Call<DefaultResponse?>?
+    ): Response<DefaultResponse>
 }

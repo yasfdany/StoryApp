@@ -8,7 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.google.android.gms.maps.model.LatLng
 import dev.studiocloud.storyapp.data.repository.MainRepository
-import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 
 class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
@@ -20,15 +19,9 @@ class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
         photo: Uri?,
         description: String,
         latLng: LatLng,
-        onSuccess: (response: DefaultResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ){
-        mainRepository?.postNewStory(
-            photo,
-            description,
-            latLng,
-            onSuccess = { onSuccess(it) },
-            onFailed,
-        )
-    }
+    ) = mainRepository?.postNewStory(
+        photo,
+        description,
+        latLng,
+    )
 }

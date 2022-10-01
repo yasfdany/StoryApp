@@ -22,6 +22,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import dev.studiocloud.storyapp.R
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.databinding.ActivityUploadBinding
 import dev.studiocloud.storyapp.ui.components.OnTextChange
 import dev.studiocloud.storyapp.utils.Tools
@@ -151,17 +152,21 @@ class UploadActivity : AppCompatActivity() {
             selectedImage,
             binding.edAddDescription.getText(),
             latLng,
-            onSuccess = {
-                progressDialog.hide()
-                Toast.makeText(this, it?.message, Toast.LENGTH_SHORT).show()
-                setResult(RESULT_OK)
-                finish()
-            },
-            onFailed = {
-                progressDialog.hide()
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        )?.observe(this){ result ->
+            when(result){
+                is ResultData.Error -> {
+                    progressDialog.hide()
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                }
+                is ResultData.Loading -> {}
+                is ResultData.Success -> {
+                    progressDialog.hide()
+                    Toast.makeText(this, result.data?.message, Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK)
+                    finish()
+                }
             }
-        )
+        }
     }
 
     private fun setupViews() {
