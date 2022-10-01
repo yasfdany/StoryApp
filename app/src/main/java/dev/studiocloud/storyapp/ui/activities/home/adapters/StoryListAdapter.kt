@@ -8,6 +8,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,6 +89,13 @@ class StoryListAdapter(
                     val intent = Intent(context,DetailActivity::class.java)
                     intent.putExtra(Constant.STORY_DATA, this)
                     context.startActivity(intent, optionsCompat.toBundle())
+                }
+
+                if(this?.lat != null && this.lon != null){
+                    val geocode = Geocoder(context)
+                    val address = geocode.getFromLocation(this.lat, this.lon,1)
+                    binding.llLocationContainer.visibility = View.VISIBLE
+                    binding.tvLocation.text = address?.get(0)?.locality ?: address?.get(0)?.featureName
                 }
             }
         }

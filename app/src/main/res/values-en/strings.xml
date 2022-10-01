@@ -19,9 +19,6 @@
     <string name="story_content_description">This is a picture posted by people</string>
     <string name="story">story</string>
     <string name="avatar_content_description">This is avatar of people who post this</string>
-    <string name="need_permission">Need permission(s)</string>
-    <string name="need_permission_description">Some permissions are required to do the task.</string>
-    <string name="ok">OK</string>
     <string name="write_caption">Write caption</string>
     <string name="upload_image">Upload Image</string>
     <string name="story_picture_description">this is picture of the story</string>
@@ -35,4 +32,5 @@
     <string name="app_widget_description">This is StackView of story</string>
     <string name="retry">Retry</string>
     <string name="maps_button_description">This is for navigating to maps</string>
+    <string name="icon_location_description">This is location indicator</string>
 </resources>

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
+import com.google.android.gms.maps.model.LatLng
 import dev.studiocloud.storyapp.data.source.MainDataSource
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
@@ -80,6 +81,7 @@ class MainRepository(
     override fun postNewStory(
         photo: Uri?,
         description: String,
+        latLng: LatLng,
         onSuccess: (response: DefaultResponse?) -> Unit,
         onFailed: ((message: String?) -> Unit)?
     ): LiveData<DefaultResponse?> {
@@ -88,6 +90,7 @@ class MainRepository(
         remoteRepository.postNewStory(
             photo,
             description,
+            latLng,
             object : RemoteRepository.DefaultCallback {
                 override fun onDataReceived(defaultResponse: DefaultResponse?) {
                     onSuccess(defaultResponse)

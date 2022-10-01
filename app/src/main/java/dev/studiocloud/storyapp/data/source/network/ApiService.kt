@@ -42,6 +42,8 @@ interface ApiService {
     fun postNewStory(
         @Header("Authorization") Authorization: String,
         @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody,
+        @Part("lon") lon: RequestBody,
         @Part photo: MultipartBody.Part
     ): Call<DefaultResponse?>?
 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.data.mediator.StoryRemoteMediator
@@ -131,6 +132,7 @@ open class RemoteRepository(
     open fun postNewStory(
         photo: Uri?,
         description: String,
+        latLng: LatLng,
         callback: DefaultCallback?,
     ): LiveData<DefaultResponse?> {
         val token = prefs?.user?.token
@@ -160,10 +162,16 @@ open class RemoteRepository(
             val body = MultipartBody.Part.createFormData("photo", file.name, requestFile)
             val descriptionBody: RequestBody =
                 description.toRequestBody("text/plain".toMediaTypeOrNull())
+            val latitudeBody: RequestBody =
+                latLng.latitude.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val longitudeBody: RequestBody =
+                latLng.longitude.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
             apiService?.postNewStory(
                 Authorization = "Bearer $token",
                 description = descriptionBody,
+                lat = latitudeBody,
+                lon = longitudeBody,
                 photo = body,
             )?.enqueue(listener)
         }

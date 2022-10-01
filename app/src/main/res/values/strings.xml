@@ -19,9 +19,6 @@
     <string name="story_content_description">Ini adalah foto yang diposting oleh orang - orang</string>
     <string name="story">story</string>
     <string name="avatar_content_description">Ini adalah avatar dari orang yang memposting foto ini</string>
-    <string name="need_permission">Perlu Perizinan</string>
-    <string name="need_permission_description">Beberapa perizinan dibutuhkan untuk menjalankan fitur.</string>
-    <string name="ok">OK</string>
     <string name="write_caption">Tulis caption</string>
     <string name="upload_image">Unggah Gambar</string>
     <string name="story_picture_description">Ini adalah gambar dari cerita</string>
@@ -35,4 +32,5 @@
     <string name="app_widget_description">ini adalah StackView dari story</string>
     <string name="retry">Coba Lagi</string>
     <string name="maps_button_description">Ini untuk navigasi ke peta</string>
+    <string name="icon_location_description">Ini adalah indikator lokasi</string>
 </resources>
