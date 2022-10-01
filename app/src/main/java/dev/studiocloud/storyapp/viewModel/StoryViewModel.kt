@@ -14,15 +14,7 @@ import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 class StoryViewModel(private val mainRepository: MainRepository?): ViewModel() {
     val stories: LiveData<PagingData<StoryItem>>? = mainRepository?.getStory()?.cachedIn(viewModelScope)
 
-    fun getStoryLocation(
-        onSuccess: (response: List<StoryItem>?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ){
-        mainRepository?.getStoryLocations(
-            onSuccess,
-            onFailed
-        )
-    }
+    fun getStoryLocation() = mainRepository?.getStoryLocations()
 
     fun postNewStory(
         photo: Uri?,

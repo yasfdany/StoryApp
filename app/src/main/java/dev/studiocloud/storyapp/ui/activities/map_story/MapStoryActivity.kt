@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import dev.studiocloud.storyapp.R
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 import dev.studiocloud.storyapp.databinding.ActivityMapStoryBinding
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
@@ -50,21 +51,31 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback {
             MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style)
         )
 
-        storyViewModel?.getStoryLocation(onSuccess = {
-            if (it != null) {
-                for (story: StoryItem in it){
-                    val position = LatLng(story.lat ?: 0.0, story.lon ?: 0.0)
-                    mMap.addMarker(
-                        MarkerOptions()
-                        .position(position)
-                        .title(story.name)
-                        .snippet(story.description)
-                    )
-                }
+        storyViewModel?.getStoryLocation()?.observe(this){ result ->
+            when(result){
+                is ResultData.Error -> {}
+                is ResultData.Loading -> {}
+                is ResultData.Success -> {
+                    for (story: StoryItem in result.data ?: arrayListOf()){
+                        val position = LatLng(
+                            story.lat ?: 0.0,
+                            story.lon ?: 0.0
+                        )
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(position)
+                                .title(story.name)
+                                .snippet(story.description)
+                        )
+                    }
 
-                val startingPosition = LatLng(it[0].lat ?: 0.0, it[0].lon ?: 0.0)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingPosition, 8f))
+                    val startingPosition = LatLng(
+                        result.data?.get(0)?.lat ?: 0.0,
+                        result.data?.get(0)?.lon ?: 0.0
+                    )
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingPosition, 8f))
+                }
             }
-        })
+        }
     }
 }

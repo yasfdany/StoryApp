@@ -32,6 +32,7 @@ internal class AuthViewModelTest{
     @Mock
     private lateinit var mainRepository: MainRepository
     private lateinit var authViewModel: AuthViewModel
+
     private val dummyLoginSuccess = DataDummy.loginSuccessResponse
     private val dummyLoginError = DataDummy.failedLoginResponse
     private val dummyRegisterSuccess = DataDummy.registerSuccessResponse

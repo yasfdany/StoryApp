@@ -15,7 +15,6 @@ import dev.studiocloud.storyapp.data.source.network.ApiService
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
-import dev.studiocloud.storyapp.data.source.network.model.StoryResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -108,36 +107,6 @@ open class RemoteRepository(
         }
     }
 
-            /*LiveData<DefaultResponse?> {
-        val data: MutableLiveData<DefaultResponse?> = MutableLiveData()
-        val listener = object: Callback<DefaultResponse?> {
-            override fun onResponse(
-                call: Call<DefaultResponse?>,
-                response: Response<DefaultResponse?>
-            ) {
-                if(response.isSuccessful){
-                    data.value = response.body()
-                    callback?.onDataReceived(response.body())
-                } else {
-                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
-                    callback?.onDataNotAvailable(errorResponse?.message)
-                }
-            }
-
-            override fun onFailure(call: Call<DefaultResponse?>, t: Throwable) {
-                callback?.onDataNotAvailable(t.message)
-            }
-        }
-
-        apiService?.doRegister(
-            name,
-            email,
-            password,
-        )?.enqueue(listener)
-
-        return data
-    }*/
-
     open fun postNewStory(
         photo: Uri?,
         description: String,
@@ -188,7 +157,24 @@ open class RemoteRepository(
         return data
     }
 
-    open fun getStoryLocations(callback: StoryCallback?): LiveData<List<StoryItem>?>{
+    open fun getStoryLocations(): LiveData<ResultData<List<StoryItem>?>> = liveData {
+        emit(ResultData.Loading)
+        val token = prefs?.user?.token
+
+        try {
+            val response = apiService?.getStoryLocations("Bearer $token")
+            if (response?.isSuccessful == true){
+                emit(ResultData.Success(response.body()?.listStory))
+            } else {
+                val errorResponse: DefaultResponse? = errorBodyToResponse(response?.errorBody()?.charStream())
+                emit(ResultData.Error(errorResponse?.message.toString()))
+            }
+        } catch (e: Exception){
+            emit(ResultData.Error(e.message.toString()))
+        }
+    }
+
+/*    {
         val token = prefs?.user?.token
         val data = MutableLiveData<List<StoryItem>?>()
         val listener = object: Callback<StoryResponse?>{
@@ -209,15 +195,10 @@ open class RemoteRepository(
 
         apiService?.getStoryLocations("Bearer $token")?.enqueue(listener)
         return data
-    }
+    }*/
 
     interface DefaultCallback {
         fun onDataReceived(defaultResponse: DefaultResponse?)
-        fun onDataNotAvailable(message: String?)
-    }
-
-    interface StoryCallback {
-        fun onDataReceived(storyResponse: StoryResponse?)
         fun onDataNotAvailable(message: String?)
     }
 }

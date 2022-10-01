@@ -18,9 +18,9 @@ interface ApiService {
     ): Response<StoryResponse>
 
     @GET("stories?location=1")
-    fun getStoryLocations(
+    suspend fun getStoryLocations(
         @Header("Authorization") Authorization: String,
-    ): Call<StoryResponse?>?
+    ): Response<StoryResponse>
 
     @FormUrlEncoded
     @POST("register")
