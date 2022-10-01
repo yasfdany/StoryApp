@@ -42,8 +42,8 @@ internal class StoryViewModelTest{
     private lateinit var storyViewModel: StoryViewModel
 
     private val dummyStory = DataDummy.getStoryResponse
+    private val dummyEmptyStory = DataDummy.getEmptyStoryResponse
     private val dummyStoryWithLocation = DataDummy.getStoryWithLocationResponse
-    private val dummyEmptyStoryWithLocation = DataDummy.getEmptyStoryResponse
 
     @Before
     fun setup(){
@@ -76,6 +76,31 @@ internal class StoryViewModelTest{
     }
 
     @Test
+    fun `when get Story return empty`() = runTest {
+        val data: PagingData<StoryItem> = StoryPagingSource.snapshot(dummyEmptyStory.listStory!!)
+        val expectedStory = liveData { emit(data) }
+
+        `when`(mainRepository.getStory()).thenReturn(expectedStory)
+
+        val actualResponse: PagingData<StoryItem>? = storyViewModel.stories?.getOrAwaitValue()
+
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = StoryListAdapter.DIFF_CALLBACK,
+            updateCallback = noopListUpdateCallback,
+            workerDispatcher = Dispatchers.Main
+        )
+
+        if (actualResponse != null){
+            differ.submitData(actualResponse)
+
+            Assert.assertNotNull(differ.snapshot())
+            Assert.assertEquals(dummyEmptyStory.listStory, differ.snapshot())
+            Assert.assertTrue(differ.snapshot().isEmpty())
+            Assert.assertEquals(dummyEmptyStory.listStory?.size, differ.snapshot().size)
+        }
+    }
+
+    @Test
     fun `when get Story with location Should Not Null and Return Success`(){
         val expectedStory = liveData<ResultData<List<StoryItem>?>> {
             emit(ResultData.Success(dummyStoryWithLocation.listStory))
@@ -94,9 +119,9 @@ internal class StoryViewModelTest{
     }
 
     @Test
-    fun `when Story with location Empty`(){
+    fun `when get Story with location Empty`(){
         val expectedStory = liveData<ResultData<List<StoryItem>?>> {
-            emit(ResultData.Success(dummyEmptyStoryWithLocation.listStory))
+            emit(ResultData.Success(dummyEmptyStory.listStory))
         }
 
         `when`(
@@ -109,7 +134,7 @@ internal class StoryViewModelTest{
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is ResultData.Success)
         Assert.assertTrue((actualResponse as ResultData.Success).data?.isEmpty() == true)
-        Assert.assertEquals(dummyEmptyStoryWithLocation.listStory?.size, actualResponse.data?.size)
+        Assert.assertEquals(dummyEmptyStory.listStory?.size, actualResponse.data?.size)
     }
 
     class StoryPagingSource : PagingSource<Int, LiveData<List<StoryItem>>>() {
