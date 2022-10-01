@@ -32,10 +32,10 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("login")
-    fun doLogin(
+    suspend fun doLogin(
         @Field("email") email: String,
         @Field("password") password: String,
-    ): Call<LoginResponse?>?
+    ): Response<LoginResponse>
 
     @Multipart
     @POST("stories")

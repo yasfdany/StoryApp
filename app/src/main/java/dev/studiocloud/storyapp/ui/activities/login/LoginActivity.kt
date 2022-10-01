@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import dev.studiocloud.storyapp.R
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.databinding.ActivityLoginBinding
 import dev.studiocloud.storyapp.ui.activities.home.HomeActivity
 import dev.studiocloud.storyapp.ui.activities.register.RegisterActivity
@@ -55,22 +56,27 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
         Tools().hideKeyboard(this)
         val progressDialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
         progressDialog.setMessage(getString(R.string.loading))
-        progressDialog.show()
 
         authViewModel?.doLogin(
             binding.edLoginEmail.getText(),
             binding.edLoginPassword.getText(),
-            onSuccess = {
-                progressDialog.dismiss()
-                finish()
-                startActivity(Intent(this, HomeActivity::class.java))
-            },
-            onFailed = {
-                progressDialog.dismiss()
-                val snackBar = Snackbar.make(binding.clLoginPage, it ?: "", Snackbar.LENGTH_SHORT)
-                snackBar.show()
+        )?.observe(this){ result ->
+            when(result){
+                is ResultData.Error -> {
+                    progressDialog.dismiss()
+                    val snackBar = Snackbar.make(binding.clLoginPage, result.error ?: "", Snackbar.LENGTH_SHORT)
+                    snackBar.show()
+                }
+                is ResultData.Loading -> {
+                    progressDialog.show()
+                }
+                is ResultData.Success -> {
+                    progressDialog.dismiss()
+                    finish()
+                    startActivity(Intent(this, HomeActivity::class.java))
+                }
             }
-        )
+        }
     }
 
     override fun onChange(text: String) {

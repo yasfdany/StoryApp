@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import dev.studiocloud.storyapp.App.Companion.prefs
 import dev.studiocloud.storyapp.data.repository.MainRepository
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
-import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResult
 
 class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
@@ -34,23 +33,5 @@ class AuthViewModel(private val mainRepository: MainRepository?): ViewModel() {
         )
     }
 
-    fun doLogin(
-        email: String,
-        password: String,
-        onSuccess: (response: LoginResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ){
-        mainRepository?.doLogin(
-            email,
-            password,
-            onSuccess = {
-                user = it?.loginResult
-                prefs?.user = it?.loginResult
-                onSuccess(it)
-            },
-            onFailed = {
-                onFailed?.invoke(it)
-            }
-        )
-    }
+    fun doLogin(email: String, password: String, ) = mainRepository?.doLogin(email, password)
 }

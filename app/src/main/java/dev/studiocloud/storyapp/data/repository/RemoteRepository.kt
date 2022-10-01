@@ -3,10 +3,12 @@ package dev.studiocloud.storyapp.data.repository
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.paging.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import dev.studiocloud.storyapp.App.Companion.prefs
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.data.mediator.StoryRemoteMediator
 import dev.studiocloud.storyapp.data.source.local.StoryDatabase
 import dev.studiocloud.storyapp.data.source.network.ApiService
@@ -64,34 +66,23 @@ open class RemoteRepository(
     open fun doLogin(
         email: String,
         password: String,
-        callback: LoginCallback?,
-    ): LiveData<LoginResponse?>{
-        val data: MutableLiveData<LoginResponse?> = MutableLiveData()
-        val listener = object: Callback<LoginResponse?>{
-            override fun onResponse(
-                call: Call<LoginResponse?>,
-                response: Response<LoginResponse?>
-            ) {
-                if(response.isSuccessful){
-                    data.value = response.body()
-                    callback?.onDataReceived(response.body())
-                } else {
-                    val errorResponse: DefaultResponse? = errorBodyToResponse(response.errorBody()?.charStream())
-                    callback?.onDataNotAvailable(errorResponse?.message)
-                }
+    ): LiveData<ResultData<LoginResponse?>> = liveData {
+        emit(ResultData.Loading)
+        try {
+            val response = apiService?.doLogin(
+                email,
+                password,
+            )
+            if (response?.isSuccessful == true){
+                prefs?.user = response.body()?.loginResult
+                emit(ResultData.Success(response.body()))
+            } else {
+                val errorResponse: DefaultResponse? = errorBodyToResponse(response?.errorBody()?.charStream())
+                emit(ResultData.Error(errorResponse?.message.toString()))
             }
-
-            override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
-                callback?.onDataNotAvailable(t.message)
-            }
+        } catch (e: Exception){
+            emit(ResultData.Error(e.message.toString()))
         }
-
-        apiService?.doLogin(
-            email,
-            password,
-        )?.enqueue(listener)
-
-        return data
     }
 
     open fun doRegister(
@@ -204,11 +195,6 @@ open class RemoteRepository(
 
     interface DefaultCallback {
         fun onDataReceived(defaultResponse: DefaultResponse?)
-        fun onDataNotAvailable(message: String?)
-    }
-
-    interface LoginCallback {
-        fun onDataReceived(loginResponse: LoginResponse?)
         fun onDataNotAvailable(message: String?)
     }
 

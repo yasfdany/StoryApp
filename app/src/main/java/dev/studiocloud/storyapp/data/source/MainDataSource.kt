@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.google.android.gms.maps.model.LatLng
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
@@ -12,9 +13,7 @@ interface MainDataSource {
     fun doLogin(
         email: String,
         password: String,
-        onSuccess: (response: LoginResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)? = null,
-    ): LiveData<LoginResponse?>
+    ): LiveData<ResultData<LoginResponse?>>
 
     fun doRegister(
         name: String,

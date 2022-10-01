@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import com.google.android.gms.maps.model.LatLng
+import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.data.source.MainDataSource
 import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.LoginResponse
@@ -37,23 +38,7 @@ class MainRepository(
     override fun doLogin(
         email: String,
         password: String,
-        onSuccess: (response: LoginResponse?) -> Unit,
-        onFailed: ((message: String?) -> Unit)?
-    ): LiveData<LoginResponse?> {
-        val response: MutableLiveData<LoginResponse?> = MutableLiveData()
-
-        remoteRepository.doLogin(email, password, object: RemoteRepository.LoginCallback {
-                override fun onDataReceived(loginResponse: LoginResponse?) {
-                    onSuccess(loginResponse)
-                }
-                override fun onDataNotAvailable(message: String?) {
-                    onFailed?.invoke(message)
-                }
-            }
-        )
-
-        return response
-    }
+    ): LiveData<ResultData<LoginResponse?>> = remoteRepository.doLogin(email, password);
 
     override fun doRegister(
         name: String,
@@ -67,6 +52,7 @@ class MainRepository(
         remoteRepository.doRegister(name, email, password, object:
             RemoteRepository.DefaultCallback {
             override fun onDataReceived(defaultResponse: DefaultResponse?) {
+                response.value = defaultResponse
                 onSuccess(defaultResponse)
             }
 
@@ -93,6 +79,7 @@ class MainRepository(
             latLng,
             object : RemoteRepository.DefaultCallback {
                 override fun onDataReceived(defaultResponse: DefaultResponse?) {
+                    response.value = defaultResponse
                     onSuccess(defaultResponse)
                 }
 
