@@ -22,7 +22,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".ui.activities.maps_story.MapStoryActivity"
+            android:name=".ui.activities.map_story.MapStoryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

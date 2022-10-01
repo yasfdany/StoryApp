@@ -1,4 +1,4 @@
-package dev.studiocloud.storyapp.ui.activities.maps_story
+package dev.studiocloud.storyapp.ui.activities.map_story
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import dev.studiocloud.storyapp.R
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
@@ -44,6 +45,11 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+
+        mMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style)
+        )
+
         storyViewModel?.getStoryLocation(onSuccess = {
             if (it != null) {
                 for (story: StoryItem in it){

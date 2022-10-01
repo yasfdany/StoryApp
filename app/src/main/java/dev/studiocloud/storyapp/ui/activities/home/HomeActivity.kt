@@ -21,7 +21,7 @@ import dev.studiocloud.storyapp.databinding.ActivityHomeBinding
 import dev.studiocloud.storyapp.ui.activities.home.adapters.LoadingStateAdapter
 import dev.studiocloud.storyapp.ui.activities.home.adapters.StoryListAdapter
 import dev.studiocloud.storyapp.ui.activities.login.LoginActivity
-import dev.studiocloud.storyapp.ui.activities.maps_story.MapStoryActivity
+import dev.studiocloud.storyapp.ui.activities.map_story.MapStoryActivity
 import dev.studiocloud.storyapp.ui.activities.upload.UploadActivity
 import dev.studiocloud.storyapp.viewModel.StoryViewModel
 import dev.studiocloud.storyapp.viewModel.ViewModelFactory
