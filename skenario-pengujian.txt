@@ -1,0 +1,47 @@
+A. Ketika Login sukses
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response tidak null
+    - Memastikan data user sesuai dengan yang diharapkan
+
+B. Ketika Login gagal
+    - Memastikan mengembalikan Result.Error
+    - Memastikan response tidak null
+    - Memastikan pesan error sesusia dengan yang diharapkan
+
+C. Ketika Register sukses
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response tidak null
+    - Memastikan pesan response sesuai dengan yang diharapkan
+
+D. Ketika Register gagal karena sudah didaftarkan
+    - Memastikan mengembalikan Result.Error
+    - Memastikan response tidak null
+    - Memastikan pesan error sesusia dengan yang diharapkan
+
+E. Ketika sukses membuat cerita
+    - Memastikan mengembalikan Result.Success
+    - Memastikan response tidak null
+    - Memastikan pesan sukses sesuai dengan yang
+
+F. Ketika berhasil memuat data Story
+    - Memastikan data tidak null
+    - Memastikan data sesuai dengan yang diharapkan
+    - Memastikan jumlah data sesuai dengan yang diharapkan
+    - Memastikan data pertama memiliki id yang diharapkan
+
+G. Ketika data Story yang dimuat kosong
+    - Memastikan data tidak null
+    - Memastikan data sesuai dengan yang diharapkan
+    - Memastikan data kosong sesuai yang diharapkan
+    - Memastikan jumlah data sesuai dengan yang diharapkan
+
+H. Ketika berhasil memuat data Story dengan lokasi
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan jumlah data sesuai dengan yang diharapkan
+
+I. Ketika data Story dengan lokasi yang dimuat kosong
+    - Memastikan response tidak null
+    - Memastikan mengembalikan Result.Success
+    - Memastikan jumlah data kosong sesuai dengan yang diharapkan
+    - Memastikan jumlah data sesuai dengan yang diharapkan

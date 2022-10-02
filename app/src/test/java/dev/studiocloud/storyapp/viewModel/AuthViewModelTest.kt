@@ -86,6 +86,8 @@ internal class AuthViewModelTest{
             "testcase@gmail.com",
             "wrongpassword",
         )
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is ResultData.Error)
         Assert.assertEquals(dummyLoginError.message, (actualResponse as ResultData.Error).error)
     }
 
