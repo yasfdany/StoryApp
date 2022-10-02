@@ -41,7 +41,7 @@ open class RemoteRepository(
         }
     }
 
-    fun errorBodyToResponse(data: Reader?): DefaultResponse? {
+    private fun errorBodyToResponse(data: Reader?): DefaultResponse? {
         return gson.fromJson(data, DefaultResponse::class.java)
     }
 

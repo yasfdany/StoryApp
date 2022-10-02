@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity(), OnTextChange {
             when(result){
                 is ResultData.Error -> {
                     progressDialog.dismiss()
-                    val snackBar = Snackbar.make(binding.clLoginPage, result.error ?: "", Snackbar.LENGTH_SHORT)
+                    val snackBar = Snackbar.make(binding.clLoginPage, result.error, Snackbar.LENGTH_SHORT)
                     snackBar.show()
                 }
                 is ResultData.Loading -> {

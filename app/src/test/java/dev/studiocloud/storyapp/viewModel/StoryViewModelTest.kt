@@ -179,9 +179,8 @@ internal class StoryViewModelTest{
             }
         }
 
-        override fun getRefreshKey(state: PagingState<Int, LiveData<List<StoryItem>>>): Int {
-            return 0
-        }
+        @Suppress("SameReturnValue")
+        override fun getRefreshKey(state: PagingState<Int, LiveData<List<StoryItem>>>): Int = 0
 
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<StoryItem>>> {
             return LoadResult.Page(emptyList(), 0, 1)
