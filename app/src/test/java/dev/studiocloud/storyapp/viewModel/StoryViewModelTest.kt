@@ -1,5 +1,6 @@
 package dev.studiocloud.storyapp.viewModel
 
+import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -8,9 +9,11 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
+import com.google.android.gms.maps.model.LatLng
 import dev.studiocloud.storyapp.MainDispatcherRule
 import dev.studiocloud.storyapp.data.ResultData
 import dev.studiocloud.storyapp.data.repository.MainRepository
+import dev.studiocloud.storyapp.data.source.network.model.DefaultResponse
 import dev.studiocloud.storyapp.data.source.network.model.StoryItem
 import dev.studiocloud.storyapp.getOrAwaitValue
 import dev.studiocloud.storyapp.ui.activities.home.adapters.StoryListAdapter
@@ -26,6 +29,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -44,10 +48,41 @@ internal class StoryViewModelTest{
     private val dummyStory = DataDummy.getStoryResponse
     private val dummyEmptyStory = DataDummy.getEmptyStoryResponse
     private val dummyStoryWithLocation = DataDummy.getStoryWithLocationResponse
+    private val dummyCreateStorySuccessResponse = DataDummy.createStorySuccessResponse
 
     @Before
     fun setup(){
         storyViewModel = StoryViewModel(mainRepository)
+    }
+
+    @Test
+    fun `when crete Story success`(){
+        val expectedResponse = liveData<ResultData<DefaultResponse?>> {
+            emit(ResultData.Success(dummyCreateStorySuccessResponse))
+        }
+        val mockedUri = mock(Uri::class.java)
+        val mockLatLng = mock(LatLng::class.java)
+
+        `when`(mainRepository.postNewStory(
+            mockedUri,
+            "Description",
+            mockLatLng
+        )).thenReturn(expectedResponse)
+
+        val actualResponse = storyViewModel.postNewStory(
+            mockedUri,
+            "Description",
+            mockLatLng
+        )?.getOrAwaitValue()
+
+        Mockito.verify(mainRepository).postNewStory(
+            mockedUri,
+            "Description",
+            mockLatLng
+        )
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is ResultData.Success)
+        Assert.assertEquals(dummyCreateStorySuccessResponse.message, (actualResponse as ResultData.Success).data?.message)
     }
 
     @Test
