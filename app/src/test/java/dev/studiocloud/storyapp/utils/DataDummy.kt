@@ -14,6 +14,10 @@ object DataDummy {
         "{\"error\":true,\"message\":\"Invalid password\"}",
         LoginResponse::class.java
     )
+    val errorResponse: DefaultResponse = Gson().fromJson(
+        "{\"error\":true,\"message\":\"Invalid password\"}",
+        DefaultResponse::class.java
+    )
     val registerSuccessResponse: DefaultResponse = Gson().fromJson(
         "{\"error\": false,\"message\": \"User Created\"}",
         DefaultResponse::class.java

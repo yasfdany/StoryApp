@@ -34,7 +34,7 @@ internal class AuthViewModelTest{
     private lateinit var authViewModel: AuthViewModel
 
     private val dummyLoginSuccess = DataDummy.loginSuccessResponse
-    private val dummyLoginError = DataDummy.failedLoginResponse
+    private val dummyLoginError = DataDummy.errorResponse
     private val dummyRegisterSuccess = DataDummy.registerSuccessResponse
     private val dummyEmailAlreadyRegistered = DataDummy.emailAlreadyRegisteredResponse
 
