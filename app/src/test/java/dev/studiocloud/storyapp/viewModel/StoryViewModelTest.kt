@@ -28,8 +28,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -90,7 +89,9 @@ internal class StoryViewModelTest{
         val data: PagingData<StoryItem> = StoryPagingSource.snapshot(dummyStory.listStory!!)
         val expectedStory = liveData { emit(data) }
 
-        `when`(mainRepository.getStory()).thenReturn(expectedStory)
+        lenient()
+            .`when`(mainRepository.getStory())
+            .thenReturn(expectedStory)
 
         val actualResponse: PagingData<StoryItem>? = storyViewModel.stories?.getOrAwaitValue()
 
@@ -115,7 +116,9 @@ internal class StoryViewModelTest{
         val data: PagingData<StoryItem> = StoryPagingSource.snapshot(dummyEmptyStory.listStory!!)
         val expectedStory = liveData { emit(data) }
 
-        `when`(mainRepository.getStory()).thenReturn(expectedStory)
+        lenient()
+            .`when`(mainRepository.getStory())
+            .thenReturn(expectedStory)
 
         val actualResponse: PagingData<StoryItem>? = storyViewModel.stories?.getOrAwaitValue()
 
@@ -147,7 +150,7 @@ internal class StoryViewModelTest{
 
         val actualResponse = storyViewModel.getStoryLocation()?.getOrAwaitValue()
 
-        Mockito.verify(mainRepository).getStoryLocations()
+        verify(mainRepository).getStoryLocations()
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is ResultData.Success)
         Assert.assertEquals(dummyStoryWithLocation.listStory?.size, (actualResponse as ResultData.Success).data?.size)
@@ -165,7 +168,7 @@ internal class StoryViewModelTest{
 
         val actualResponse = storyViewModel.getStoryLocation()?.getOrAwaitValue()
 
-        Mockito.verify(mainRepository).getStoryLocations()
+        verify(mainRepository).getStoryLocations()
         Assert.assertNotNull(actualResponse)
         Assert.assertTrue(actualResponse is ResultData.Success)
         Assert.assertTrue((actualResponse as ResultData.Success).data?.isEmpty() == true)

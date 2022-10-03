@@ -10,9 +10,9 @@ object DataDummy {
         "{\"error\":false,\"message\":\"success\",\"loginResult\":{\"userId\":\"user-RBCBHlZuTeQFWnxK\",\"name\":\"Test Case\",\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLVJCQ0JIbFp1VGVRRldueEsiLCJpYXQiOjE2NjQ2MTQyMzh9.tUL-I9UEAjtbXb2e-kOvBTONhY0HDBLjZqZjUTg3qt0\"}}",
         LoginResponse::class.java,
     )
-    val failedLoginResponse: DefaultResponse = Gson().fromJson(
+    val failedLoginResponse: LoginResponse = Gson().fromJson(
         "{\"error\":true,\"message\":\"Invalid password\"}",
-        DefaultResponse::class.java
+        LoginResponse::class.java
     )
     val registerSuccessResponse: DefaultResponse = Gson().fromJson(
         "{\"error\": false,\"message\": \"User Created\"}",

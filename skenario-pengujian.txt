@@ -6,7 +6,7 @@ A. Ketika Login sukses
 B. Ketika Login gagal
     - Memastikan mengembalikan Result.Error
     - Memastikan response tidak null
-    - Memastikan pesan error sesusia dengan yang diharapkan
+    - Memastikan pesan error sesuai dengan yang diharapkan
 
 C. Ketika Register sukses
     - Memastikan mengembalikan Result.Success
@@ -21,7 +21,7 @@ D. Ketika Register gagal karena sudah didaftarkan
 E. Ketika sukses membuat cerita
     - Memastikan mengembalikan Result.Success
     - Memastikan response tidak null
-    - Memastikan pesan sukses sesuai dengan yang
+    - Memastikan pesan sukses sesuai dengan yang diharapkan
 
 F. Ketika berhasil memuat data Story
     - Memastikan data tidak null
