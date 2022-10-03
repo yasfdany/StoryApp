@@ -91,7 +91,7 @@ internal class RemoteRepositoryTest{
             fakeRequestBody,
             fakeRequestBody,
             fakeMultipartRequestBody
-        );
+        )
 
         Assert.assertNotNull(expectedResponse)
         Assert.assertEquals(expectedResponse.message, actualResponse.body()?.message)
@@ -100,7 +100,7 @@ internal class RemoteRepositoryTest{
     @Test
     fun `when getStory Should Not Null`() = runTest {
         val expectedResponse = DataDummy.getStoryResponse
-        val actualResponse = apiService.getAllStories("token", 1, 10);
+        val actualResponse = apiService.getAllStories("token", 1, 10)
 
         Assert.assertNotNull(expectedResponse)
         Assert.assertEquals(expectedResponse.listStory?.size, actualResponse.body()?.listStory?.size)
@@ -109,7 +109,7 @@ internal class RemoteRepositoryTest{
     @Test
     fun `when getStory Return empty`() = runTest {
         val expectedResponse = DataDummy.getEmptyStoryResponse
-        val actualResponse = apiService.getAllStories("apiKey", 1, 0);
+        val actualResponse = apiService.getAllStories("apiKey", 1, 0)
 
         Assert.assertNotNull(expectedResponse)
         Assert.assertTrue(expectedResponse.listStory?.isEmpty() == true)
@@ -119,7 +119,7 @@ internal class RemoteRepositoryTest{
     @Test
     fun `when getStoryLocations Should Not Null`() = runTest {
         val expectedResponse = DataDummy.getStoryWithLocationResponse
-        val actualResponse = apiService.getStoryLocations("token");
+        val actualResponse = apiService.getStoryLocations("token")
 
         Assert.assertNotNull(expectedResponse)
         Assert.assertEquals(expectedResponse.listStory?.size, actualResponse.body()?.listStory?.size)
@@ -128,7 +128,7 @@ internal class RemoteRepositoryTest{
     @Test
     fun `when getStoryLocations Return empty`() = runTest {
         val expectedResponse = DataDummy.getEmptyStoryResponse
-        val actualResponse = apiService.getStoryLocations("empty");
+        val actualResponse = apiService.getStoryLocations("empty")
 
         Assert.assertNotNull(expectedResponse)
         Assert.assertTrue(expectedResponse.listStory?.isEmpty() == true)
